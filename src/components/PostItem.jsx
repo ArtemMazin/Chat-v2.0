@@ -3,7 +3,7 @@ export const PostItem = (props) => {
     <div className='post'>
       <div className='post__content'>
         <h2>
-          {props.post.id}. {props.post.title}
+          {props.number}. {props.post.title}
         </h2>
         <p>{props.post.body}</p>
       </div>

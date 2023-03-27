@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Counter } from './components/Counter';
 import { PostItem } from './components/PostItem';
 import { PostList } from './components/PostList';
@@ -13,19 +13,31 @@ function App() {
     { id: 3, title: 'JavaSript', body: 'Description' },
   ]);
 
-  const [title, setTitle] = useState('пост');
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+
   const addNewPost = (e) => {
     e.preventDefault();
-    console.log(title);
+    const newPost = {
+      id: Date.now(),
+      title,
+      body,
+    };
+    setPosts([...posts, newPost]);
+    setTitle('');
+    setBody('');
   };
   return (
-    <div className="App">
-      <form className="form">
+    <div className='App'>
+      <form className='form'>
         <MyInput
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <MyInput />
+        <MyInput
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
+        />
         <MyButton onClick={addNewPost}>Создать пост</MyButton>
       </form>
       <PostList
