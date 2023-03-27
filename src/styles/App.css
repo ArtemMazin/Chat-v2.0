@@ -9,6 +9,7 @@
 }
 .App {
   width: 800px;
+  margin: 15px;
 }
 .post {
   padding: 15px;
@@ -28,4 +29,11 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
 }
