@@ -6,6 +6,7 @@ import MyButton from './components/UI/button/MyButton';
 import MyInput from './components/UI/input/MyInput';
 import PostForm from './components/PostForm';
 import './styles/App.css';
+import MySelect from './components/UI/select/MySelect';
 
 function App() {
   const [posts, setPosts] = useState([
@@ -14,6 +15,7 @@ function App() {
     { id: 3, title: 'JavaSript', body: 'Description' },
   ]);
 
+  const [selectedSort, setSelectedSort] = useState(); //1.09.40
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
   };
@@ -24,6 +26,16 @@ function App() {
   return (
     <div className="App">
       <PostForm create={createPost} />
+      <div>
+        <MySelect
+          defaultValue="Сортировка"
+          options={[
+            { value: 'title', name: 'По названию' },
+            { value: 'body', name: 'По описанию' },
+          ]}
+        />
+      </div>
+
       {posts.length ? (
         <PostList
           remove={removePost}
