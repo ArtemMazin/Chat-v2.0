@@ -1,6 +1,8 @@
 import express from 'express';
+import mongoose from 'mongoose';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
+import router from './routes/index';
 
 const { PORT = 3000 } = process.env;
 
@@ -19,6 +21,10 @@ app.use(limiter);
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+mongoose.connect('mongodb://127.0.0.1:27017/chatdb');
+
+app.use(router);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
