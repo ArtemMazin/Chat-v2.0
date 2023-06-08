@@ -1,10 +1,11 @@
 import express from 'express';
+import cors from 'cors';
 import mongoose from 'mongoose';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import router from './routes/index';
 
-const { PORT = 3000 } = process.env;
+const { PORT = 5000 } = process.env;
 
 const app = express();
 const limiter = rateLimit({
@@ -21,6 +22,11 @@ app.use(limiter);
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(
+  cors({
+    origin: '*',
+  }),
+);
 
 mongoose.connect('mongodb://127.0.0.1:27017/chatdb');
 

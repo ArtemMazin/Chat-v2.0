@@ -2,9 +2,9 @@ import User from '../models/user';
 import handleErrors from '../utils/utils';
 
 const createUser = (req, res) => {
-  const { name } = req.body;
+  const { userName } = req.body;
 
-  User.create({ name })
+  User.create({ userName })
     .then((user) => res.status(201).send({ data: user }))
     .catch((err) => handleErrors(err, res));
 };

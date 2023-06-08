@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Card, Input, Button, Typography } from '@material-tailwind/react';
 
-export default function FormLogin() {
+export default function FormLogin({ userName, setUserName, handleSubmitLogin }) {
   return (
     <Card
       className='container max-w-md py-10'
@@ -17,7 +17,9 @@ export default function FormLogin() {
         className='mt-1 font-normal'>
         Enter your details to login.
       </Typography>
-      <form className='mt-8 mb-2 w-80 max-w-screen-lg sm:w-96'>
+      <form
+        className='mt-8 mb-2 w-80 max-w-screen-lg sm:w-96'
+        onSubmit={(e) => handleSubmitLogin(e, userName)}>
         <div className='mb-4 flex flex-col gap-6'>
           <Input
             size='lg'
@@ -25,6 +27,7 @@ export default function FormLogin() {
             name='name'
             className='placeholder:text-center'
             placeholder='Username'
+            onChange={(e) => setUserName(e.target.value)}
             required
           />
           <Input
@@ -37,23 +40,13 @@ export default function FormLogin() {
             // required
           />
         </div>
-        <Link>
-          <Button
-            className='mt-6'
-            fullWidth>
-            Login
-          </Button>
-        </Link>
-        <Typography
-          color='gray'
-          className='mt-4 text-center font-normal'>
-          Go to registration{' '}
-          <Link
-            to={'/sign-up'}
-            className='font-medium text-blue-500 transition-colors hover:text-blue-700'>
-            Sign Up
-          </Link>
-        </Typography>
+
+        <Button
+          className='mt-6'
+          fullWidth
+          type='submit'>
+          Login
+        </Button>
       </form>
     </Card>
   );

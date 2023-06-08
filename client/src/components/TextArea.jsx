@@ -7,11 +7,7 @@ export default function TextArea() {
         variant='outlined'
         label='Your Comment'
       />
-      <div className='w-full flex justify-between py-1.5'>
-        <IconButton
-          variant='text'
-          color='blue-gray'
-          size='sm'></IconButton>
+      <div className='w-full flex justify-end py-1.5'>
         <div className='flex gap-2'>
           <Button
             size='sm'
