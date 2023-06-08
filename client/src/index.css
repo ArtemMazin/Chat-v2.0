@@ -1,2 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url(./vendor/normalize.css);
 @import url(./vendor/fonts/fonts.css);
+
+.body {
+  font-family: 'Inter', Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+}
+
+/* W3C standard
+   сейчас только для Firefox */
+   * {
+    scrollbar-width: thin;
+    scrollbar-color: #fffaf0 #970c0a;
+  }
+
+  /* для Chrome/Edge/Safari */
+  *::-webkit-scrollbar {
+
+    width: 8px;
+  }
+  *::-webkit-scrollbar-track {
+    background: #fff;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: #dbeafe;
+    border-radius: 5px;
+  }
