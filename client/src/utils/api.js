@@ -12,13 +12,13 @@ async function request(url, options) {
   return getResponseData(res);
 }
 
-export function login(userName) {
+export function login(userName, userPassword) {
   return request('/users', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ userName }),
+    body: JSON.stringify({ userName, userPassword }),
   }).then((data) => {
     return data;
   });

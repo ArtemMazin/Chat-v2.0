@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import FormLogin from './FormLogin';
 import ProtectedRouteElement from './ProtectedRouteElement';
@@ -7,15 +7,19 @@ import { login } from '../utils/api';
 
 export default function App() {
   const [userName, setUserName] = useState('');
+  const [userPassword, setUserPassword] = useState('');
+  const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmitLogin = (e, userName) => {
+  const handleSubmitLogin = (e, userName, userPassword) => {
     e.preventDefault();
 
-    login(userName)
+    const handleLogin = () => setLoggedIn(true);
+
+    login(userName, userPassword)
       .then((data) => {
-        console.log(data);
-        navigate('/main', { replace: true });
+        handleLogin();
+        navigate('/', { replace: true });
       })
       .catch((err) => {
         console.log(err);
@@ -30,29 +34,28 @@ export default function App() {
           element={
             <FormLogin
               userName={userName}
+              userPassword={userPassword}
               setUserName={setUserName}
+              setUserPassword={setUserPassword}
               handleSubmitLogin={handleSubmitLogin}
             />
           }
         />
+
         <Route
-          path='/main'
-          element={<Main />}
+          path='/'
+          element={
+            <ProtectedRouteElement
+              element={Main}
+              loggedIn={loggedIn}
+            />
+          }
         />
-        {/* <Route
-      path="/"
-      element={
-        <ProtectedRouteElement
-          element={Main}
-          loggedIn={loggedIn}
-        />
-      }
-    /> */}
         <Route
           path='*'
           element={
             <Navigate
-              to='/sign-in'
+              to='/'
               replace
             />
           }
