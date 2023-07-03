@@ -1,7 +1,7 @@
-import { Card, Input, Button, Typography} from '@material-tailwind/react';
+import { Card, Input, Button, Typography } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 
-export default function FormLogin({ email, userPassword, setEmail, setUserPassword, handleSubmitLogin }) {
+export default function FormRegister({email, userPassword, setEmail, setUserPassword, handleSubmitRegistration }) {
   return (
     <Card
       className='container max-w-md py-10'
@@ -10,16 +10,16 @@ export default function FormLogin({ email, userPassword, setEmail, setUserPasswo
       <Typography
         variant='h4'
         color='blue-gray'>
-        Sign In
+        Sign Up
       </Typography>
       <Typography
         color='gray'
         className='mt-1 font-normal'>
-        Enter your details to login.
+        Enter your details to registration.
       </Typography>
       <form
         className='mt-8 mb-2 w-80 max-w-screen-lg sm:w-96'
-        onSubmit={(e) => handleSubmitLogin(e, email, userPassword)}>
+        onSubmit={(e) => handleSubmitRegistration(e, email, userPassword)}>
         <div className='mb-4 flex flex-col gap-6'>
           <Input
             size='lg'
@@ -50,11 +50,11 @@ export default function FormLogin({ email, userPassword, setEmail, setUserPasswo
         <Typography
           color='gray'
           className='mt-4 text-center font-normal'>
-          Go to registration{' '}
+          Go to login{' '}
           <Link
-            to={'/sign-up'}
+            to={'/sign-in'}
             className='font-medium text-blue-500 transition-colors hover:text-blue-700'>
-            Sign Up
+            Sign In
           </Link>
         </Typography>
       </form>
