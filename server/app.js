@@ -15,18 +15,19 @@ const limiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   message: 'Слишком много запросов с данного IP, повторите попытку позднее',
 });
-
+app.use(cors({
+  credentials: true,
+  origin: [
+    'http://localhost:3000',
+  ],
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+}));
 // express-rate-limit ограничивает количество запросов
 app.use(limiter);
 // helmet помогает защитить приложения Express, устанавливая заголовки ответа HTTP
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(
-  cors({
-    origin: '*',
-  }),
-);
 
 mongoose.connect('mongodb://127.0.0.1:27017/chatdb');
 

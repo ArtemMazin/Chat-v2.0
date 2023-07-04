@@ -6,7 +6,7 @@ export default function Sidebar({ users }) {
       <div className='text-blue-400 text-center '>Users in this room</div>
       <List className='list-none'>
         {users.map((user) => (
-          <li>{user.name}</li>
+          <li key={user._id}>{user.name}</li>
         ))}
       </List>
     </Card>

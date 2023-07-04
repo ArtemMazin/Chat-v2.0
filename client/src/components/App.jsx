@@ -39,6 +39,25 @@ export default function App() {
         navigate('/sign-up', { replace: true });
       });
   };
+  //токен
+  useEffect(() => {
+    tokenCheck();
+  }, []);
+
+  function tokenCheck() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      getUsers()
+        .then((res) => {
+          if (res) {
+            // авторизуем пользователя
+            setLoggedIn(true);
+            navigate('/', { replace: true });
+          }
+        })
+        .catch(console.error);
+    }
+  }
 
   useEffect(() => {
     if (loggedIn) {

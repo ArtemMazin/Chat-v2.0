@@ -15,18 +15,23 @@ async function request(url, options) {
 export function login(email, password) {
   return request('/signin', {
     method: 'POST',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ email, password }),
   }).then((data) => {
-    return data;
+    if (data) {
+      localStorage.setItem('token', 'isLoggedIn');
+      return data;
+    }
   });
 }
 export function register(email, password) { 
   return request('/signup', 
     { 
       method: 'POST', 
+      credentials: 'include',
       headers: { 
         'Content-Type': 'application/json', 
       }, 
@@ -35,5 +40,5 @@ export function register(email, password) {
   );
 } 
 export function getUsers() {
-  return request('/users');
+  return request('/users', {credentials: 'include',});
 }
