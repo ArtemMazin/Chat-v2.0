@@ -3,12 +3,12 @@ import HeaderNavbar from './HeaderNavbar';
 import Chat from './Chat';
 import Sidebar from './Sidebar';
 
-const Main = () => {
+const Main = ({ users }) => {
   return (
     <div className='container h-screen flex flex-col'>
       <HeaderNavbar />
 
-      <Sidebar />
+      <Sidebar users={users} />
       <Chat />
 
       <TextArea />

@@ -1,15 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import FormLogin from './FormLogin';
 import FormRegister from './FormRegister';
 import ProtectedRouteElement from './ProtectedRouteElement';
 import Main from './Main';
-import { login, register } from '../utils/api';
+import { getUsers, login, register } from '../utils/api';
 
 export default function App() {
   const [email, setEmail] = useState('');
   const [password, setpassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
+  const [users, setUsers] = useState([]);
   const navigate = useNavigate();
 
   const handleSubmitLogin = (e, email, password) => {
@@ -38,6 +39,16 @@ export default function App() {
         navigate('/sign-up', { replace: true });
       });
   };
+
+  useEffect(() => {
+    if (loggedIn) {
+      Promise.all([getUsers()])
+        .then(([usersArray]) => {
+          setUsers(usersArray.data);
+        })
+        .catch(console.error);
+    }
+  }, [loggedIn]);
 
   return (
     <div className='App'>
@@ -73,6 +84,7 @@ export default function App() {
             <ProtectedRouteElement
               element={Main}
               loggedIn={loggedIn}
+              users={users}
             />
           }
         />

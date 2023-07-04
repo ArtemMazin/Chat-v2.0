@@ -34,3 +34,6 @@ export function register(email, password) {
     },
   );
 } 
+export function getUsers() {
+  return request('/users');
+}
