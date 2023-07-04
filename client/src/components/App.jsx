@@ -8,16 +8,16 @@ import { login, register } from '../utils/api';
 
 export default function App() {
   const [email, setEmail] = useState('');
-  const [userPassword, setUserPassword] = useState('');
+  const [password, setpassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmitLogin = (e, email, userPassword) => {
+  const handleSubmitLogin = (e, email, password) => {
     e.preventDefault();
 
     const handleLogin = () => setLoggedIn(true);
 
-    login(email, userPassword)
+    login(email, password)
       .then((data) => {
         handleLogin();
         navigate('/', { replace: true });
@@ -27,30 +27,30 @@ export default function App() {
       });
   };
 
-  const handleSubmitRegistration =(e, email, userPassword)=>{
+  const handleSubmitRegistration = (e, email, password) => {
     e.preventDefault();
-    register(email, userPassword).then((res) => { 
-      navigate('/sign-in', { replace: true }); 
-    }) 
-    .catch((err) => { 
-      console.log(err); 
-      navigate('/sign-up', { replace: true }); 
-    }) 
-  
-  }
+    register(email, password)
+      .then((res) => {
+        navigate('/sign-in', { replace: true });
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate('/sign-up', { replace: true });
+      });
+  };
 
   return (
     <div className='App'>
       <Routes>
-      <Route
+        <Route
           path='/sign-up'
           element={
             <FormRegister
-            handleSubmitRegistration={handleSubmitRegistration}
-            email={email}
-              userPassword={userPassword}
+              handleSubmitRegistration={handleSubmitRegistration}
+              email={email}
+              password={password}
               setEmail={setEmail}
-              setUserPassword={setUserPassword}
+              setpassword={setpassword}
             />
           }
         />
@@ -59,9 +59,9 @@ export default function App() {
           element={
             <FormLogin
               email={email}
-              userPassword={userPassword}
+              password={password}
               setEmail={setEmail}
-              setUserPassword={setUserPassword}
+              setpassword={setpassword}
               handleSubmitLogin={handleSubmitLogin}
             />
           }

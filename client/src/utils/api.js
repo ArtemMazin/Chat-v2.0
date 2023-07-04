@@ -12,25 +12,25 @@ async function request(url, options) {
   return getResponseData(res);
 }
 
-export function login(email, userPassword) {
+export function login(email, password) {
   return request('/signin', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, userPassword }),
+    body: JSON.stringify({ email, password }),
   }).then((data) => {
     return data;
   });
 }
-export function register(email, userPassword) { 
+export function register(email, password) { 
   return request('/signup', 
     { 
       method: 'POST', 
       headers: { 
         'Content-Type': 'application/json', 
       }, 
-      body: JSON.stringify({ email, userPassword }), 
+      body: JSON.stringify({ email, password }), 
     },
   );
 } 

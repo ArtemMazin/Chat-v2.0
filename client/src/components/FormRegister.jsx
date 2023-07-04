@@ -1,7 +1,7 @@
 import { Card, Input, Button, Typography } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 
-export default function FormRegister({email, userPassword, setEmail, setUserPassword, handleSubmitRegistration }) {
+export default function FormRegister({ email, password, setEmail, setpassword, handleSubmitRegistration }) {
   return (
     <Card
       className='container max-w-md py-10'
@@ -19,7 +19,7 @@ export default function FormRegister({email, userPassword, setEmail, setUserPass
       </Typography>
       <form
         className='mt-8 mb-2 w-80 max-w-screen-lg sm:w-96'
-        onSubmit={(e) => handleSubmitRegistration(e, email, userPassword)}>
+        onSubmit={(e) => handleSubmitRegistration(e, email, password)}>
         <div className='mb-4 flex flex-col gap-6'>
           <Input
             size='lg'
@@ -36,7 +36,7 @@ export default function FormRegister({email, userPassword, setEmail, setUserPass
             name='password'
             className='placeholder:text-center'
             placeholder='password'
-            onChange={(e) => setUserPassword(e.target.value)}
+            onChange={(e) => setpassword(e.target.value)}
             required
           />
         </div>
