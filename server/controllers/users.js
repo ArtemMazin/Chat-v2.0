@@ -1,7 +1,6 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
-import handleErrors from '../utils/utils';
 
 const register = (req, res, next) => {
   const {
@@ -44,10 +43,10 @@ const login = (req, res, next) => {
     .catch(next);
 };
 
-const getUsers = (req, res) => {
+const getUsers = (req, res, next) => {
   User.find({})
     .then((user) => res.send({ data: user }))
-    .catch((err) => handleErrors(err, res));
+    .catch(next);
 };
 
 export { register, login, getUsers };

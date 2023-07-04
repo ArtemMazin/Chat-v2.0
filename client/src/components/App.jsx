@@ -36,7 +36,6 @@ export default function App() {
       })
       .catch((err) => {
         console.log(err);
-        navigate('/sign-up', { replace: true });
       });
   };
   //токен
@@ -47,15 +46,15 @@ export default function App() {
   function tokenCheck() {
     const token = localStorage.getItem('token');
     if (token) {
-      getUsers()
-        .then((res) => {
-          if (res) {
-            // авторизуем пользователя
-            setLoggedIn(true);
-            navigate('/', { replace: true });
-          }
-        })
-        .catch(console.error);
+      //   getUsers()
+      //     .then((res) => {
+      //       if (res) {
+      // авторизуем пользователя
+      setLoggedIn(true);
+      navigate('/', { replace: true });
+      // }
+      //     })
+      //     .catch(console.error);
     }
   }
 
@@ -104,6 +103,7 @@ export default function App() {
               element={Main}
               loggedIn={loggedIn}
               users={users}
+              setLoggedIn={setLoggedIn}
             />
           }
         />

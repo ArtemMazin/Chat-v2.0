@@ -3,7 +3,9 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import router from './routes/index';
+import handleErrors from './errors/handleErrors';
 
 const { PORT = 5000 } = process.env;
 
@@ -27,11 +29,14 @@ app.use(limiter);
 // helmet помогает защитить приложения Express, устанавливая заголовки ответа HTTP
 app.use(helmet());
 app.use(express.json());
+app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 mongoose.connect('mongodb://127.0.0.1:27017/chatdb');
 
 app.use(router);
+
+app.use(handleErrors);
 
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
