@@ -27,18 +27,26 @@ export function login(email, password) {
     }
   });
 }
-export function register(email, password) { 
-  return request('/signup', 
-    { 
-      method: 'POST', 
-      credentials: 'include',
-      headers: { 
-        'Content-Type': 'application/json', 
-      }, 
-      body: JSON.stringify({ email, password }), 
+export function register(email, password) {
+  return request('/signup', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
-} 
-export function getUsers() {
-  return request('/users', {credentials: 'include',});
+    body: JSON.stringify({ email, password }),
+  });
 }
+export function getUsers() {
+  return request('/users', { credentials: 'include' });
+}
+
+export function logout() {
+  return request('/signout', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  });
+};

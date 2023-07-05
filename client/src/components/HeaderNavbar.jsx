@@ -1,13 +1,13 @@
 import { Button, Navbar } from '@material-tailwind/react';
 import { useNavigate } from 'react-router-dom';
 
-export default function HeaderNavbar({ setLoggedIn }) {
+export default function HeaderNavbar({ onLogout }) {
   const navigate = useNavigate();
 
   function signOut() {
     localStorage.removeItem('token');
-    setLoggedIn(false);
-    navigate('/sign-in');
+    onLogout();
+    navigate('/sign-in', { replace: 'true' });
   }
   return (
     <Navbar className='flex justify-between'>

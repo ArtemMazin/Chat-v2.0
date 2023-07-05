@@ -51,4 +51,11 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
-export { register, login, getUsers };
+const logout = (req, res) => {
+  res.clearCookie('jwt')
+    .send({ message: 'Выход' });
+};
+
+export {
+  register, login, getUsers, logout,
+};

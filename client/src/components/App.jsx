@@ -4,7 +4,7 @@ import FormLogin from './FormLogin';
 import FormRegister from './FormRegister';
 import ProtectedRouteElement from './ProtectedRouteElement';
 import Main from './Main';
-import { getUsers, login, register } from '../utils/api';
+import { getUsers, login, logout, register } from '../utils/api';
 
 export default function App() {
   const [email, setEmail] = useState('');
@@ -68,6 +68,12 @@ export default function App() {
     }
   }, [loggedIn]);
 
+  function onLogout() {
+    logout()
+      .then(() => setLoggedIn(false))
+      .catch((err) => console.log(err));
+  }
+
   return (
     <div className='App'>
       <Routes>
@@ -103,7 +109,7 @@ export default function App() {
               element={Main}
               loggedIn={loggedIn}
               users={users}
-              setLoggedIn={setLoggedIn}
+              onLogout={onLogout}
             />
           }
         />
