@@ -27,14 +27,14 @@ export function login(email, password) {
     }
   });
 }
-export function register(email, password) {
+export function register(name, email, password) {
   return request('/signup', {
     method: 'POST',
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ email, password }),
+    body: JSON.stringify({ name, email, password }),
   });
 }
 export function getUsers() {
@@ -49,4 +49,4 @@ export function logout() {
     },
     credentials: 'include',
   });
-};
+}

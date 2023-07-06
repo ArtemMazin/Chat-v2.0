@@ -6,7 +6,8 @@ import isURL from 'validator/lib/isURL';
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    default: 'Nobody',
+    unique: true,
+    required: true,
     minlength: 2,
     maxlength: 30,
   },

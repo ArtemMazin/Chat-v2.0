@@ -7,6 +7,7 @@ import Main from './Main';
 import { getUsers, login, logout, register } from '../utils/api';
 
 export default function App() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setpassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
@@ -28,9 +29,9 @@ export default function App() {
       });
   };
 
-  const handleSubmitRegistration = (e, email, password) => {
+  const handleSubmitRegistration = (e, name, email, password) => {
     e.preventDefault();
-    register(email, password)
+    register(name, email, password)
       .then((res) => {
         navigate('/sign-in', { replace: true });
       })
@@ -46,15 +47,15 @@ export default function App() {
   function tokenCheck() {
     const token = localStorage.getItem('token');
     if (token) {
-      //   getUsers()
-      //     .then((res) => {
-      //       if (res) {
-      // авторизуем пользователя
-      setLoggedIn(true);
-      navigate('/', { replace: true });
-      // }
-      //     })
-      //     .catch(console.error);
+      getUsers()
+        .then((res) => {
+          if (res) {
+            // авторизуем пользователя
+            setLoggedIn(true);
+            navigate('/', { replace: true });
+          }
+        })
+        .catch(console.error);
     }
   }
 
@@ -82,6 +83,8 @@ export default function App() {
           element={
             <FormRegister
               handleSubmitRegistration={handleSubmitRegistration}
+              name={name}
+              setName={setName}
               email={email}
               password={password}
               setEmail={setEmail}
