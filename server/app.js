@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
+import { errors } from 'celebrate';
 import router from './routes/index';
 import handleErrors from './errors/handleErrors';
 
@@ -35,6 +36,8 @@ app.use(express.urlencoded({ extended: true }));
 mongoose.connect('mongodb://127.0.0.1:27017/chatdb');
 
 app.use(router);
+
+app.use(errors());
 
 app.use(handleErrors);
 

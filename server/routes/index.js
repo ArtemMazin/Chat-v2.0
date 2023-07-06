@@ -2,11 +2,12 @@ import { Router } from 'express';
 import userRoutes from './users';
 import { login, logout, register } from '../controllers/users';
 import checkAuth from '../middlewares/auth';
+import { loginValidation, registerValidation } from '../utils/validationConfig';
 
 const router = Router();
 
-router.post('/signup', register);
-router.post('/signin', login);
+router.post('/signup', registerValidation, register);
+router.post('/signin', loginValidation, login);
 
 router.use(checkAuth);
 
