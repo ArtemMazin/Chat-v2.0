@@ -58,7 +58,7 @@ export default function FormRegister({ handleSubmitRegistration }) {
             size='lg'
             name='password'
             value={password || ''}
-            className={`placeholder:text-center ${!inputsValid.email ? 'border-b-2 border-b-red-700' : ''}`}
+            className={`placeholder:text-center ${!inputsValid.password ? 'border-b-2 border-b-red-700' : ''}`}
             placeholder='Введите пароль'
             onChange={handleChangeValidation}
             minLength='6'

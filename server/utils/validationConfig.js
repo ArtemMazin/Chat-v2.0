@@ -13,7 +13,7 @@ export const loginValidation = celebrate({
 
 export const registerValidation = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().min(2).max(30),
+    name: Joi.string().min(2).max(30).required(),
     about: Joi.string().min(2).max(30),
     email: Joi.string().required().pattern(regExpEmail),
     password: Joi.string().required(),

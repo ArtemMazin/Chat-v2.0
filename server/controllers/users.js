@@ -15,13 +15,17 @@ const register = (req, res, next) => {
       avatar,
       email,
       password: hash,
-    }).then((user) => res.status(201)
-      .send({ data: user.toJSON() })
-      .catch(next)))
+    }).then((user) => {
+      console.log(user);
+      res.status(201)
+        .send({ data: user.toJSON() });
+    }))
     .catch((err) => {
       if (err.code === 11000) {
+        console.log(err);
         next(new Error('Пользователь с таким email уже существует'));
       }
+      console.log(err);
       next(err);
     });
 };
