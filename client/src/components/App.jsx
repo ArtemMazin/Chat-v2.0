@@ -7,9 +7,9 @@ import Main from './Main';
 import { getUsers, login, logout, register } from '../utils/api';
 
 export default function App() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setpassword] = useState('');
+  // const [name, setName] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [password, setpassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
@@ -83,12 +83,12 @@ export default function App() {
           element={
             <FormRegister
               handleSubmitRegistration={handleSubmitRegistration}
-              name={name}
-              setName={setName}
-              email={email}
-              password={password}
-              setEmail={setEmail}
-              setpassword={setpassword}
+              // name={name}
+              // setName={setName}
+              // email={email}
+              // password={password}
+              // setEmail={setEmail}
+              // setpassword={setpassword}
             />
           }
         />
@@ -96,10 +96,10 @@ export default function App() {
           path='/sign-in'
           element={
             <FormLogin
-              email={email}
-              password={password}
-              setEmail={setEmail}
-              setpassword={setpassword}
+              // email={email}
+              // password={password}
+              // setEmail={setEmail}
+              // setpassword={setpassword}
               handleSubmitLogin={handleSubmitLogin}
             />
           }

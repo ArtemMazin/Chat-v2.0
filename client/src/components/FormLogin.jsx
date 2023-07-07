@@ -1,7 +1,17 @@
 import { Card, Input, Button, Typography } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useFormAndValidation } from '../hooks/useFormAndValidation';
 
-export default function FormLogin({ email, password, setEmail, setpassword, handleSubmitLogin }) {
+export default function FormLogin({ handleSubmitLogin }) {
+  const { isFormValid, errors, handleChangeValidation, inputsValid, setInputsValid, values } = useFormAndValidation();
+  const { email, password } = values;
+
+  useEffect(() => {
+    //при монтировании инпуты валидны
+    setInputsValid({ email: true, password: true });
+  }, []);
+
   return (
     <Card
       className='container max-w-md py-10'
@@ -20,31 +30,37 @@ export default function FormLogin({ email, password, setEmail, setpassword, hand
       <form
         className='mt-8 mb-2 w-80 max-w-screen-lg sm:w-96'
         onSubmit={(e) => handleSubmitLogin(e, email, password)}>
-        <div className='mb-4 flex flex-col gap-6'>
+        <div className='flex flex-col gap-2'>
           <Input
             size='lg'
-            type='text'
+            type='email'
             name='email'
-            className='placeholder:text-center'
-            placeholder='email'
-            onChange={(e) => setEmail(e.target.value)}
+            value={email || ''}
+            className={`placeholder:text-center ${!inputsValid.email ? 'border-b-2 border-b-red-700' : ''}`}
+            placeholder='Введите email'
+            onChange={handleChangeValidation}
             required
           />
+          <span className='block h-8 text-xs text-red-700 overflow-hidden'>{errors.email || ''}</span>
           <Input
             type='password'
             size='lg'
             name='password'
-            className='placeholder:text-center'
-            placeholder='password'
-            onChange={(e) => setpassword(e.target.value)}
+            value={password || ''}
+            className={`placeholder:text-center ${!inputsValid.password ? 'border-b-2 border-b-red-700' : ''}`}
+            placeholder='Введите пароль'
+            onChange={handleChangeValidation}
+            minLength='6'
             required
           />
+          <span className='block h-8 text-xs text-red-700 overflow-hidden'>{errors.password || ''}</span>
         </div>
 
         <Button
-          className='mt-6'
+          className='mt-2'
           fullWidth
-          type='submit'>
+          type='submit'
+          disabled={!isFormValid}>
           Login
         </Button>
         <Typography
