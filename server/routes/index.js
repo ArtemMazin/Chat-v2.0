@@ -3,6 +3,7 @@ import userRoutes from './users';
 import { login, logout, register } from '../controllers/users';
 import checkAuth from '../middlewares/auth';
 import { loginValidation, registerValidation } from '../utils/validationConfig';
+import NotFoundError from '../errors/NotFoundError';
 
 const router = Router();
 
@@ -15,6 +16,6 @@ router.use(userRoutes);
 
 router.use('/signout', logout);
 
-router.use('*', (req, res, next) => next(new Error('Указан некорректный маршрут')));
+router.use('*', (req, res, next) => next(new NotFoundError('Указан некорректный маршрут')));
 
 export default router;

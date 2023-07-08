@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import UnauthorizedError from '../errors/UnauthorizedError';
 
 const checkAuth = (req, res, next) => {
   if (req.cookies.jwt) {
@@ -7,11 +8,11 @@ const checkAuth = (req, res, next) => {
       const payload = jwt.verify(token, 'SECRET_KEY');
       req.user = payload;
     } catch (error) {
-      next(new Error('Необходима авторизация'));
+      next(new UnauthorizedError('Необходима авторизация'));
       return;
     }
   } else {
-    next(new Error('Необходима авторизация'));
+    next(new UnauthorizedError('Необходима авторизация'));
     return;
   }
 

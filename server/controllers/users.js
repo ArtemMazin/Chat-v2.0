@@ -1,6 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
+import EmailIsExist from '../errors/EmailIsExist';
 
 const register = (req, res, next) => {
   const {
@@ -16,16 +17,14 @@ const register = (req, res, next) => {
       email,
       password: hash,
     }).then((user) => {
-      console.log(user);
       res.status(201)
         .send({ data: user.toJSON() });
     }))
     .catch((err) => {
       if (err.code === 11000) {
-        console.log(err);
-        next(new Error('Пользователь с таким email уже существует'));
+        next(new EmailIsExist('Пользователь уже существует'));
+        return;
       }
-      console.log(err);
       next(err);
     });
 };

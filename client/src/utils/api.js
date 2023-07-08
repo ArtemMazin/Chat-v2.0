@@ -35,7 +35,7 @@ export function register(name, email, password) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ name, email, password }),
-  });
+  })
 }
 export function getUsers() {
   return request('/users', { credentials: 'include' });
