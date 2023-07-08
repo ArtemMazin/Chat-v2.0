@@ -7,15 +7,14 @@ import Main from './Main';
 import { getUsers, login, logout, register } from '../utils/api';
 
 export default function App() {
-  // const [name, setName] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [password, setpassword] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmitLogin = (e, email, password) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const handleLogin = () => setLoggedIn(true);
 
@@ -26,18 +25,22 @@ export default function App() {
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const handleSubmitRegistration = (e, name, email, password) => {
     e.preventDefault();
+    setIsLoading(true);
+
     register(name, email, password)
       .then((res) => {
         navigate('/sign-in', { replace: true });
       })
       .catch((err) => {
         console.log(err);
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
   //токен
   useEffect(() => {
@@ -83,12 +86,7 @@ export default function App() {
           element={
             <FormRegister
               handleSubmitRegistration={handleSubmitRegistration}
-              // name={name}
-              // setName={setName}
-              // email={email}
-              // password={password}
-              // setEmail={setEmail}
-              // setpassword={setpassword}
+              isLoading={isLoading}
             />
           }
         />
@@ -96,11 +94,8 @@ export default function App() {
           path='/sign-in'
           element={
             <FormLogin
-              // email={email}
-              // password={password}
-              // setEmail={setEmail}
-              // setpassword={setpassword}
               handleSubmitLogin={handleSubmitLogin}
+              isLoading={isLoading}
             />
           }
         />

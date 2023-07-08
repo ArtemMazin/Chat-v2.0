@@ -2,8 +2,9 @@ import { Card, Input, Button, Typography } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useFormAndValidation } from '../hooks/useFormAndValidation';
+import { Spinner } from '@material-tailwind/react';
 
-export default function FormRegister({ handleSubmitRegistration }) {
+export default function FormRegister({ handleSubmitRegistration, isLoading }) {
   const { isFormValid, errors, handleChangeValidation, inputsValid, setInputsValid, values } = useFormAndValidation();
   const { name, email, password } = values;
 
@@ -68,11 +69,11 @@ export default function FormRegister({ handleSubmitRegistration }) {
         </div>
 
         <Button
-          className='mt-2'
+          className='mt-2 h-12 flex justify-center items-center'
           fullWidth
           type='submit'
           disabled={!isFormValid}>
-          Login
+          {!isLoading ? 'Зарегистрироваться' : <Spinner />}
         </Button>
         <Typography
           color='gray'
