@@ -10,9 +10,7 @@ export default function HeaderNavbar({ onLogout }) {
     navigate('/sign-in', { replace: 'true' });
   }
   return (
-    <Navbar className='flex justify-between'>
-      <div className='text-blue-400'></div>
-      <div className='text-blue-400'> users in this room</div>
+    <Navbar className='flex justify-end max-w-full'>
       <Button
         type='button'
         onClick={signOut}>

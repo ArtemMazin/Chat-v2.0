@@ -5,7 +5,7 @@ import Sidebar from './Sidebar';
 
 const Main = ({ users, onLogout }) => {
   return (
-    <div className='container h-screen flex flex-col'>
+    <div className='h-screen p-6 flex flex-col bg-blue-50'>
       <HeaderNavbar onLogout={onLogout} />
 
       <Sidebar users={users} />
