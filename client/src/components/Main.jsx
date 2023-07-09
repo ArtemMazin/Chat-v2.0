@@ -5,16 +5,18 @@ import Sidebar from './Sidebar';
 
 const Main = ({ users, currentUser, onLogout }) => {
   return (
-    <div className='h-screen p-6 flex flex-col bg-blue-50'>
+    <div className='h-screen p-6 flex flex-col gap-2 bg-blue-50'>
       <HeaderNavbar
         currentUser={currentUser}
         onLogout={onLogout}
       />
-
-      <Sidebar users={users} />
-      <Chat />
-
-      <TextArea />
+      <div className='h-full flex gap-2'>
+        <Sidebar users={users} />
+        <div className='h-full w-full flex flex-col gap-2'>
+          <Chat />
+          <TextArea />
+        </div>
+      </div>
     </div>
   );
 };
