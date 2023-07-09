@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
 import EmailIsExist from '../errors/EmailIsExist';
+import NotFoundError from '../errors/NotFoundError';
 
 const register = (req, res, next) => {
   const {
@@ -54,11 +55,18 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
+const getProfile = (req, res, next) => {
+  User.findById(req.user._id)
+    .orFail(() => new NotFoundError('Пользователь не найден'))
+    .then((user) => res.send({ data: user }))
+    .catch(next);
+};
+
 const logout = (req, res) => {
   res.clearCookie('jwt')
     .send({ message: 'Выход' });
 };
 
 export {
-  register, login, getUsers, logout,
+  register, login, getUsers, logout, getProfile,
 };

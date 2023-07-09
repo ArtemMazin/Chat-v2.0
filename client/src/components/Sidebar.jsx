@@ -2,8 +2,8 @@ import { List, Card, Avatar } from '@material-tailwind/react';
 
 export default function Sidebar({ users }) {
   return (
-    <Card className='w-80 my-3'>
-      <div className='py-2 text-blue-400 text-center '>Users in this room</div>
+    <Card className='w-80 h-full my-3'>
+      <div className='py-2 text-blue-400 text-center border-b border-b-blue-50'>Users in this room</div>
       <List className='p-0 gap-0 list-none'>
         {users.map((user) => (
           <li
@@ -15,7 +15,10 @@ export default function Sidebar({ users }) {
               className='w-8 h-8 mx-2 object-cover'
               variant='rounded'
             />
-            <p>{user.name}</p>
+            <div>
+              <p className='text-sm'>{user.name}</p>
+              <p className='text-xs'>{user.about}</p>
+            </div>
           </li>
         ))}
       </List>

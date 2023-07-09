@@ -1,7 +1,7 @@
-import { Button, Navbar } from '@material-tailwind/react';
+import { Button, Navbar, Avatar } from '@material-tailwind/react';
 import { useNavigate } from 'react-router-dom';
 
-export default function HeaderNavbar({ onLogout }) {
+export default function HeaderNavbar({ currentUser, onLogout }) {
   const navigate = useNavigate();
 
   function signOut() {
@@ -10,7 +10,12 @@ export default function HeaderNavbar({ onLogout }) {
     navigate('/sign-in', { replace: 'true' });
   }
   return (
-    <Navbar className='flex justify-end max-w-full'>
+    <Navbar className='flex justify-between max-w-full'>
+      <Avatar
+        src={currentUser.avatar}
+        alt='Профиль'
+        variant='rounded'
+      />
       <Button
         type='button'
         onClick={signOut}>

@@ -40,6 +40,9 @@ export function register(name, email, password) {
 export function getUsers() {
   return request('/users', { credentials: 'include' });
 }
+export function getProfileData() {
+  return request('/users/me', { credentials: 'include' });
+}
 
 export function logout() {
   return request('/signout', {

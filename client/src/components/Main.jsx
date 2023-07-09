@@ -3,10 +3,13 @@ import HeaderNavbar from './HeaderNavbar';
 import Chat from './Chat';
 import Sidebar from './Sidebar';
 
-const Main = ({ users, onLogout }) => {
+const Main = ({ users, currentUser, onLogout }) => {
   return (
     <div className='h-screen p-6 flex flex-col bg-blue-50'>
-      <HeaderNavbar onLogout={onLogout} />
+      <HeaderNavbar
+        currentUser={currentUser}
+        onLogout={onLogout}
+      />
 
       <Sidebar users={users} />
       <Chat />

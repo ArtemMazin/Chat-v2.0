@@ -11,7 +11,7 @@ export default function TextArea() {
     <React.Fragment>
       <Button
         onClick={handleOpen}
-        className='m-4 self-end'>
+        className='mr-8 self-end'>
         Message Dialog
       </Button>
       <Dialog

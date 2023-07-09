@@ -4,10 +4,11 @@ import FormLogin from './FormLogin';
 import FormRegister from './FormRegister';
 import ProtectedRouteElement from './ProtectedRouteElement';
 import Main from './Main';
-import { getUsers, login, logout, register } from '../utils/api';
+import { getProfileData, getUsers, login, logout, register } from '../utils/api';
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -64,9 +65,10 @@ export default function App() {
 
   useEffect(() => {
     if (loggedIn) {
-      Promise.all([getUsers()])
-        .then(([usersArray]) => {
+      Promise.all([getUsers(), getProfileData()])
+        .then(([usersArray, userInfo]) => {
           setUsers(usersArray.data);
+          setCurrentUser(userInfo.data);
         })
         .catch(console.error);
     }
@@ -108,6 +110,7 @@ export default function App() {
               loggedIn={loggedIn}
               users={users}
               onLogout={onLogout}
+              currentUser={currentUser}
             />
           }
         />
