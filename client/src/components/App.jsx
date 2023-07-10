@@ -5,6 +5,7 @@ import FormRegister from './FormRegister';
 import ProtectedRouteElement from './ProtectedRouteElement';
 import Main from './Main';
 import { getProfileData, getUsers, login, logout, register } from '../utils/api';
+import EditAvatarPopup from './EditAvatarPopup';
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -12,6 +13,11 @@ export default function App() {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+
+  function handleEditAvatarClick() {
+    setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
+  }
 
   const handleSubmitLogin = (e, email, password) => {
     e.preventDefault();
@@ -111,6 +117,7 @@ export default function App() {
               users={users}
               onLogout={onLogout}
               currentUser={currentUser}
+              handleEditAvatarClick={handleEditAvatarClick}
             />
           }
         />
@@ -124,6 +131,11 @@ export default function App() {
           }
         />
       </Routes>
+      <EditAvatarPopup
+        handleEditAvatarClick={handleEditAvatarClick}
+        isEditAvatarPopupOpen={isEditAvatarPopupOpen}
+        currentUser={currentUser}
+      />
     </div>
   );
 }

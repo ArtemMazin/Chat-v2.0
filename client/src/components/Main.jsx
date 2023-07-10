@@ -3,12 +3,13 @@ import HeaderNavbar from './HeaderNavbar';
 import Chat from './Chat';
 import Sidebar from './Sidebar';
 
-const Main = ({ users, currentUser, onLogout }) => {
+const Main = ({ users, currentUser, onLogout, handleEditAvatarClick }) => {
   return (
     <div className='h-screen p-6 flex flex-col gap-2 bg-blue-50'>
       <HeaderNavbar
         currentUser={currentUser}
         onLogout={onLogout}
+        handleEditAvatarClick={handleEditAvatarClick}
       />
       <div className='h-full flex gap-2'>
         <Sidebar users={users} />
