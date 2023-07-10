@@ -10,7 +10,7 @@ export default function HeaderNavbar({ currentUser, onLogout, handleEditAvatarCl
     navigate('/sign-in', { replace: 'true' });
   }
   return (
-    <Navbar className='flex justify-between max-w-full'>
+    <Navbar className='p-2 max-w-full flex justify-between items-center rounded'>
       <Avatar
         src={currentUser.avatar}
         alt='Профиль'
@@ -20,7 +20,8 @@ export default function HeaderNavbar({ currentUser, onLogout, handleEditAvatarCl
       />
       <Button
         type='button'
-        onClick={signOut}>
+        onClick={signOut}
+        className='max-h-10'>
         Left the room
       </Button>
     </Navbar>

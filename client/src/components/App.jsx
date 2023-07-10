@@ -4,7 +4,7 @@ import FormLogin from './FormLogin';
 import FormRegister from './FormRegister';
 import ProtectedRouteElement from './ProtectedRouteElement';
 import Main from './Main';
-import { getProfileData, getUsers, login, logout, register } from '../utils/api';
+import { changeProfileData, getProfileData, getUsers, login, logout, register } from '../utils/api';
 import EditAvatarPopup from './EditAvatarPopup';
 
 export default function App() {
@@ -17,6 +17,17 @@ export default function App() {
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
+  }
+
+  function handleUpdateUser(user) {
+    setIsLoading(true);
+    changeProfileData(user)
+      .then((userInfo) => {
+        console.log(userInfo);
+        setCurrentUser(userInfo.data);
+      })
+      .catch(console.error)
+      .finally(() => setIsLoading(false));
   }
 
   const handleSubmitLogin = (e, email, password) => {
@@ -132,9 +143,11 @@ export default function App() {
         />
       </Routes>
       <EditAvatarPopup
-        handleEditAvatarClick={handleEditAvatarClick}
+        isOpen={handleEditAvatarClick}
         isEditAvatarPopupOpen={isEditAvatarPopupOpen}
         currentUser={currentUser}
+        handleUpdateUser={handleUpdateUser}
+        isLoading={isLoading}
       />
     </div>
   );

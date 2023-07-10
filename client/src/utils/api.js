@@ -53,3 +53,19 @@ export function logout() {
     credentials: 'include',
   });
 }
+
+export function changeProfileData(data) {
+
+  return request('/users/me', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      avatar: data.avatar,
+      name: data.name,
+      about: data.about,
+    }),
+    credentials: 'include',
+  });
+}

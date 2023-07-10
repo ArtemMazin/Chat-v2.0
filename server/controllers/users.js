@@ -67,6 +67,17 @@ const logout = (req, res) => {
     .send({ message: 'Выход' });
 };
 
+const updateProfile = (req, res, next) => {
+  const { avatar, name, about } = req.body;
+
+  User.findByIdAndUpdate(req.user._id, { avatar, name, about }, {
+    new: true, // обработчик then получит на вход обновлённую запись
+    runValidators: true, // данные будут валидированы перед изменением
+  })
+    .then((user) => res.send({ data: user }))
+    .catch(next);
+};
+
 export {
-  register, login, getUsers, logout, getProfile,
+  register, login, getUsers, logout, getProfile, updateProfile,
 };

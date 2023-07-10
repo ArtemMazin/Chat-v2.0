@@ -14,7 +14,7 @@ export default function UserInfo({ user }) {
       handler={setOpenPopover}>
       <PopoverHandler {...triggers}>
         <Button
-          className='h-12 w-full p-0 flex items-center gap-2 font-light border-b border-b-blue-50 normal-case'
+          className='h-12 w-full p-0 flex items-center gap-2 font-light border-b border-b-blue-50 normal-case text-left'
           variant='text'>
           <Avatar
             src={user.avatar}
@@ -23,14 +23,24 @@ export default function UserInfo({ user }) {
             variant='rounded'
           />
           <div>
-            <p className='text-sm'>{user.name}</p>
-            <p className='text-xs'>{user.about}</p>
+            <Typography
+              variant='h6'
+              color='blue-gray'
+              className='font-medium text-sm'>
+              {user.name}
+            </Typography>
+            <Typography
+              variant='h6'
+              color='blue-gray'
+              className='font-medium text-xs'>
+              {user.about}
+            </Typography>
           </div>
         </Button>
       </PopoverHandler>
       <PopoverContent
         {...triggers}
-        className='max-w-[24rem] flex gap-2 bg-blue-50'>
+        className='max-w-[14rem] p-2 w-full flex gap-2 bg-blue-50'>
         <Avatar
           size='md'
           variant='circular'
@@ -41,14 +51,14 @@ export default function UserInfo({ user }) {
           <Typography
             variant='h6'
             color='blue-gray'
-            className='flex items-center gap-2 font-medium'>
-            <p className='text-sm'>{user.name}</p>
+            className='font-medium text-sm'>
+            {user.name}
           </Typography>
           <Typography
             variant='small'
             color='gray'
-            className='font-normal'>
-            <p className='text-xs'>{user.about}</p>
+            className='font-normal text-xs'>
+            {user.about}
           </Typography>
         </div>
       </PopoverContent>
