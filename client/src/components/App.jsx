@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { io } from 'socket.io-client';
 import FormLogin from './FormLogin';
 import FormRegister from './FormRegister';
 import ProtectedRouteElement from './ProtectedRouteElement';
 import Main from './Main';
 import { changeProfileData, getProfileData, getUsers, login, logout, register } from '../utils/api';
 import EditAvatarPopup from './EditAvatarPopup';
+
+const socket = io('http://localhost:5000', {
+  credentials: 'include',
+});
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -14,6 +19,20 @@ export default function App() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [message, setMessage] = useState('');
+  const [messageList, setMessageList] = useState([]);
+
+  useEffect(() => {
+    socket.on('messageList', ({ message }) => {
+      setMessageList((_state) => [..._state, message]);
+    });
+  }, []);
+
+  function handleMessage(e) {
+    e.preventDefault();
+    socket.emit('sendMessage', { message });
+    setMessage('');
+  }
 
   function handleEditAvatarClick() {
     setIsEditAvatarPopupOpen(!isEditAvatarPopupOpen);
@@ -128,6 +147,10 @@ export default function App() {
               users={users}
               onLogout={onLogout}
               currentUser={currentUser}
+              message={message}
+              setMessage={setMessage}
+              handleMessage={handleMessage}
+              messageList={messageList}
               handleEditAvatarClick={handleEditAvatarClick}
             />
           }

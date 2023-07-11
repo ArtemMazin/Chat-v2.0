@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import http from 'http';
+import { Server } from 'socket.io';
 import mongoose from 'mongoose';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
@@ -11,6 +13,16 @@ import handleErrors from './errors/handleErrors';
 const { PORT = 5000 } = process.env;
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server, {
+  cors: {
+    credentials: true,
+    origin: [
+      'http://localhost:3000',
+    ],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  },
+});
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
@@ -35,13 +47,19 @@ app.use(express.urlencoded({ extended: true }));
 
 mongoose.connect('mongodb://127.0.0.1:27017/chatdb');
 
+io.on('connection', (socket) => {
+  socket.on('sendMessage', (message) => {
+    io.emit('messageList', { message });
+  });
+});
+
 app.use(router);
 
 app.use(errors());
 
 app.use(handleErrors);
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`Слушаю порт: ${PORT}`);
 });

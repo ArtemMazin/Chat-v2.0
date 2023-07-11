@@ -1,12 +1,16 @@
 import { Button, IconButton, Input } from '@material-tailwind/react';
 import { LinkIcon } from '@heroicons/react/24/outline';
 
-export default function TextArea() {
+export default function TextArea({ message, setMessage, handleMessage }) {
   return (
-    <form className='relative'>
+    <form
+      className='relative'
+      onSubmit={handleMessage}>
       <Input
         variant='outlined'
         label='Your Comment'
+        value={message || ''}
+        onChange={(e) => setMessage(e.target.value)}
       />
       <div className='w-full flex justify-between py-1.5'>
         <IconButton
