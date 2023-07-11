@@ -1,18 +1,9 @@
 import React, { useEffect } from 'react';
-import {
-  Button,
-  Dialog,
-  DialogHeader,
-  DialogBody,
-  DialogFooter,
-  Input,
-  Textarea,
-  Spinner,
-} from '@material-tailwind/react';
+import { Button, Dialog, DialogBody, Input, Textarea, Spinner } from '@material-tailwind/react';
 import { useFormAndValidation } from '../hooks/useFormAndValidation';
 
 export default function EditAvatarPopup({ isOpen, isEditAvatarPopupOpen, currentUser, handleUpdateUser, isLoading }) {
-  const { isFormValid, errors, handleChangeValidation, inputsValid, setInputsValid, resetForm, values, setValues } =
+  const { errors, handleChangeValidation, inputsValid, setInputsValid, resetForm, values, setValues } =
     useFormAndValidation();
 
   useEffect(() => {

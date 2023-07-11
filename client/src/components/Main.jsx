@@ -12,7 +12,10 @@ const Main = ({ users, currentUser, onLogout, handleEditAvatarClick }) => {
         handleEditAvatarClick={handleEditAvatarClick}
       />
       <div className='h-full flex gap-2'>
-        <Sidebar users={users} />
+        <Sidebar
+          users={users}
+          currentUser={currentUser}
+        />
         <div className='h-full w-full flex flex-col gap-2'>
           <Chat />
           <TextArea />
