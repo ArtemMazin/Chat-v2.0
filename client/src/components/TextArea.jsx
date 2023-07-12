@@ -8,7 +8,7 @@ export default function TextArea({ message, setMessage, handleMessage }) {
       onSubmit={handleMessage}>
       <Input
         variant='outlined'
-        label='Your Comment'
+        label='Сообщение'
         value={message || ''}
         onChange={(e) => setMessage(e.target.value)}
       />
@@ -28,13 +28,13 @@ export default function TextArea({ message, setMessage, handleMessage }) {
             color='red'
             variant='text'
             className='rounded-md'>
-            Cancel
+            Отмена
           </Button>
           <Button
             size='sm'
             className='rounded-md'
             type='submit'>
-            Post Comment
+            Отправить
           </Button>
         </div>
       </div>

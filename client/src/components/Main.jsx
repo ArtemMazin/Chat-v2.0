@@ -10,11 +10,12 @@ const Main = ({
   handleEditAvatarClick,
   message,
   setMessage,
+  messageOwner,
   messageList,
   handleMessage,
 }) => {
   return (
-    <div className='h-screen p-6 flex flex-col gap-2 bg-blue-50'>
+    <div className='h-screen p-6 flex flex-col gap-2 overflow-hidden bg-blue-50'>
       <HeaderNavbar
         currentUser={currentUser}
         onLogout={onLogout}
@@ -26,7 +27,10 @@ const Main = ({
           currentUser={currentUser}
         />
         <div className='h-full w-full flex flex-col gap-2'>
-          <Chat messageList={messageList} />
+          <Chat
+            messageList={messageList}
+            currentUser={currentUser}
+          />
           <TextArea
             setMessage={setMessage}
             handleMessage={handleMessage}

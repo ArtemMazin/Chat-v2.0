@@ -48,8 +48,8 @@ app.use(express.urlencoded({ extended: true }));
 mongoose.connect('mongodb://127.0.0.1:27017/chatdb');
 
 io.on('connection', (socket) => {
-  socket.on('sendMessage', (message) => {
-    io.emit('messageList', { message });
+  socket.on('sendMessage', ({ message, currentUser }) => {
+    io.emit('messageList', { message, currentUser });
   });
 });
 

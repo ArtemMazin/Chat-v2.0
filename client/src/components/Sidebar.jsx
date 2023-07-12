@@ -3,7 +3,7 @@ import UserInfo from './UserInfo';
 
 export default function Sidebar({ users, currentUser }) {
   return (
-    <Card className='w-80 h-full overflow-y-auto rounded'>
+    <Card className='w-80 h-full overflow-y-scroll rounded'>
       <div className='py-2 text-blue-400 text-center border-b border-b-blue-50'>Users in this room</div>
       <List className='p-0 gap-0 list-none'>
         {users

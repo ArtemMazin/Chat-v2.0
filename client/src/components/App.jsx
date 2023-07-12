@@ -23,14 +23,14 @@ export default function App() {
   const [messageList, setMessageList] = useState([]);
 
   useEffect(() => {
-    socket.on('messageList', ({ message }) => {
-      setMessageList((_state) => [..._state, message]);
+    socket.on('messageList', ({ message, currentUser }) => {
+      setMessageList((_state) => [..._state, { message, currentUser }]);
     });
   }, []);
 
   function handleMessage(e) {
     e.preventDefault();
-    socket.emit('sendMessage', { message });
+    socket.emit('sendMessage', { message, currentUser });
     setMessage('');
   }
 
@@ -42,7 +42,6 @@ export default function App() {
     setIsLoading(true);
     changeProfileData(user)
       .then((userInfo) => {
-        console.log(userInfo);
         setCurrentUser(userInfo.data);
       })
       .catch(console.error)
