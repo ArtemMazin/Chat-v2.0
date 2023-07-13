@@ -52,6 +52,9 @@ export function register(name, email, password, setErrorMessageLogin) {
 export function getUsers() {
   return request('/users', { credentials: 'include' });
 }
+export function getMessages() {
+  return request('/messages', { credentials: 'include' });
+}
 export function getProfileData() {
   return request('/users/me', { credentials: 'include' });
 }

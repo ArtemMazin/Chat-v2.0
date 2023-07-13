@@ -5,7 +5,7 @@ import FormLogin from './FormLogin';
 import FormRegister from './FormRegister';
 import ProtectedRouteElement from './ProtectedRouteElement';
 import Main from './Main';
-import { changeProfileData, getProfileData, getUsers, login, logout, register } from '../utils/api';
+import { changeProfileData, getProfileData, getUsers, getMessages, login, logout, register } from '../utils/api';
 import EditAvatarPopup from './EditAvatarPopup';
 import PopupWithError from './PopupWithError';
 
@@ -22,6 +22,7 @@ export default function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [messageList, setMessageList] = useState([]);
+  const [messagesDB, setMessagesDB] = useState([]);
   const [isInfoFailLoginPopupOpen, setIsInfoFailLoginPopupOpen] = useState(false);
   const [isInfoFailRegistrationPopupOpen, setIsInfoFailRegistrationPopupOpen] = useState(false);
   const [errorMessageLogin, setErrorMessageLogin] = useState('');
@@ -114,10 +115,11 @@ export default function App() {
 
   useEffect(() => {
     if (loggedIn) {
-      Promise.all([getUsers(), getProfileData()])
-        .then(([usersArray, userInfo]) => {
+      Promise.all([getUsers(), getProfileData(), getMessages()])
+        .then(([usersArray, userInfo, messages]) => {
           setUsers(usersArray.data);
           setCurrentUser(userInfo.data);
+          setMessagesDB(messages.data);
         })
         .catch(console.error);
     }
@@ -163,6 +165,7 @@ export default function App() {
               onLogout={onLogout}
               currentUser={currentUser}
               message={message}
+              messagesDB={messagesDB}
               setMessage={setMessage}
               handleMessage={handleMessage}
               messageList={messageList}

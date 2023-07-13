@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import userRoutes from './users';
+import messageRoutes from './messages';
 import { login, logout, register } from '../controllers/users';
 import checkAuth from '../middlewares/auth';
 import { loginValidation, registerValidation } from '../utils/validationConfig';
@@ -13,6 +14,7 @@ router.post('/signin', loginValidation, login);
 router.use(checkAuth);
 
 router.use(userRoutes);
+router.use(messageRoutes);
 
 router.use('/signout', logout);
 

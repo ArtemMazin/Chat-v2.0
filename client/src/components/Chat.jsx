@@ -1,7 +1,7 @@
 import { Card } from '@material-tailwind/react';
 import { useEffect, useRef } from 'react';
 
-const Chat = ({ messageList, currentUser }) => {
+const Chat = ({ messageList, messagesDB, currentUser }) => {
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -13,6 +13,21 @@ const Chat = ({ messageList, currentUser }) => {
 
   return (
     <Card className='flex grow overflow-y-scroll rounded'>
+      <ul className='px-10 flex flex-col list-none'>
+        {messagesDB.map((message, i) => (
+          <li
+            key={i}
+            className='m-1 flex self-end'>
+            <div className='flex'>
+              <div className='px-2 max-w-xs flex flex-col text-sm bg-blue-200'>
+                <h2 className='self-end font-medium'>{message.owner}</h2>
+                <p>{message.text}</p>
+              </div>
+            </div>
+          </li>
+        ))}
+        <div ref={messagesEndRef} />
+      </ul>
       <ul className='px-10 flex flex-col list-none'>
         {messageList.map((message, i) =>
           message.currentUser._id === currentUser._id ? (

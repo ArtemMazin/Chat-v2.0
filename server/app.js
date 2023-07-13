@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser';
 import { errors } from 'celebrate';
 import router from './routes/index';
 import handleErrors from './errors/handleErrors';
+import DBmessage from './models/message';
 
 const { PORT = 5000 } = process.env;
 
@@ -49,6 +50,9 @@ mongoose.connect('mongodb://127.0.0.1:27017/chatdb');
 
 io.on('connection', (socket) => {
   socket.on('sendMessage', ({ message, currentUser }) => {
+    const text = message;
+    const owner = currentUser;
+    DBmessage.create({ text, owner });
     io.emit('messageList', { message, currentUser });
   });
 });

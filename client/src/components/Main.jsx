@@ -9,6 +9,7 @@ const Main = ({
   onLogout,
   handleEditAvatarClick,
   message,
+  messagesDB,
   setMessage,
   messageList,
   handleMessage,
@@ -28,6 +29,7 @@ const Main = ({
         <div className='h-full w-full flex flex-col gap-2'>
           <Chat
             messageList={messageList}
+            messagesDB={messagesDB}
             currentUser={currentUser}
           />
           <TextArea
