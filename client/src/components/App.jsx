@@ -7,6 +7,7 @@ import ProtectedRouteElement from './ProtectedRouteElement';
 import Main from './Main';
 import { changeProfileData, getProfileData, getUsers, login, logout, register } from '../utils/api';
 import EditAvatarPopup from './EditAvatarPopup';
+import InfoFailLoginPopup from './InfoFailLoginPopup';
 
 const socket = io('http://localhost:5000', {
   credentials: 'include',
@@ -21,6 +22,12 @@ export default function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [messageList, setMessageList] = useState([]);
+  const [isInfoFailLoginPopupOpen, setIsInfoFailLoginPopupOpen] = useState(false);
+  const [errorMessageLogin, setErrorMessageLogin] = useState('');
+
+  function showInfoFailLoginPopup() {
+    setIsInfoFailLoginPopupOpen(true);
+  }
 
   useEffect(() => {
     socket.on('messageList', ({ message, currentUser }) => {
@@ -54,13 +61,14 @@ export default function App() {
 
     const handleLogin = () => setLoggedIn(true);
 
-    login(email, password)
+    login(email, password, setErrorMessageLogin)
       .then((data) => {
         handleLogin();
         navigate('/', { replace: true });
       })
       .catch((err) => {
         console.log(err);
+        showInfoFailLoginPopup();
       })
       .finally(() => setIsLoading(false));
   };
@@ -170,6 +178,11 @@ export default function App() {
         currentUser={currentUser}
         handleUpdateUser={handleUpdateUser}
         isLoading={isLoading}
+      />
+      <InfoFailLoginPopup
+        isOpen={isInfoFailLoginPopupOpen}
+        setIsInfoFailLoginPopupOpen={setIsInfoFailLoginPopupOpen}
+        errorMessage={errorMessageLogin}
       />
     </div>
   );
