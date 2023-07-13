@@ -15,7 +15,7 @@ const Main = ({
   handleMessage,
 }) => {
   return (
-    <div className='h-screen p-6 flex flex-col gap-2 overflow-hidden bg-blue-50'>
+    <div className='h-screen px-8 pt-20 pb-2 flex flex-col gap-2 overflow-hidden bg-blue-50'>
       <HeaderNavbar
         currentUser={currentUser}
         onLogout={onLogout}
