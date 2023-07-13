@@ -2,7 +2,7 @@ import React from 'react';
 import { Alert, Button } from '@material-tailwind/react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 
-export default function InfoFailLoginPopup({ isOpen, setIsInfoFailLoginPopupOpen, errorMessage }) {
+export default function PopupWithError({ isOpen, setIsOpen, errorMessage }) {
   return (
     <React.Fragment>
       <Alert
@@ -17,7 +17,7 @@ export default function InfoFailLoginPopup({ isOpen, setIsInfoFailLoginPopupOpen
             color='white'
             size='sm'
             className='!absolute top-3 right-3'
-            onClick={() => setIsInfoFailLoginPopupOpen(false)}>
+            onClick={() => setIsOpen(false)}>
             Закрыть
           </Button>
         }>

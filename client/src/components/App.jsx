@@ -7,7 +7,7 @@ import ProtectedRouteElement from './ProtectedRouteElement';
 import Main from './Main';
 import { changeProfileData, getProfileData, getUsers, login, logout, register } from '../utils/api';
 import EditAvatarPopup from './EditAvatarPopup';
-import InfoFailLoginPopup from './InfoFailLoginPopup';
+import PopupWithError from './PopupWithError';
 
 const socket = io('http://localhost:5000', {
   credentials: 'include',
@@ -23,10 +23,15 @@ export default function App() {
   const [message, setMessage] = useState('');
   const [messageList, setMessageList] = useState([]);
   const [isInfoFailLoginPopupOpen, setIsInfoFailLoginPopupOpen] = useState(false);
+  const [isInfoFailRegistrationPopupOpen, setIsInfoFailRegistrationPopupOpen] = useState(false);
   const [errorMessageLogin, setErrorMessageLogin] = useState('');
+  const [errorMessageRegistration, setErrorMessageRegistration] = useState('');
 
   function showInfoFailLoginPopup() {
     setIsInfoFailLoginPopupOpen(true);
+  }
+  function showInfoFailRegistrationPopup() {
+    setIsInfoFailRegistrationPopupOpen(true);
   }
 
   useEffect(() => {
@@ -77,12 +82,13 @@ export default function App() {
     e.preventDefault();
     setIsLoading(true);
 
-    register(name, email, password)
+    register(name, email, password, setErrorMessageRegistration)
       .then((res) => {
         navigate('/sign-in', { replace: true });
       })
       .catch((err) => {
         console.log(err);
+        showInfoFailRegistrationPopup();
       })
       .finally(() => setIsLoading(false));
   };
@@ -131,6 +137,7 @@ export default function App() {
           element={
             <FormRegister
               handleSubmitRegistration={handleSubmitRegistration}
+              setIsInfoFailRegistrationPopupOpen={setIsInfoFailRegistrationPopupOpen}
               isLoading={isLoading}
             />
           }
@@ -140,6 +147,7 @@ export default function App() {
           element={
             <FormLogin
               handleSubmitLogin={handleSubmitLogin}
+              setIsInfoFailLoginPopupOpen={setIsInfoFailLoginPopupOpen}
               isLoading={isLoading}
             />
           }
@@ -179,10 +187,15 @@ export default function App() {
         handleUpdateUser={handleUpdateUser}
         isLoading={isLoading}
       />
-      <InfoFailLoginPopup
+      <PopupWithError
         isOpen={isInfoFailLoginPopupOpen}
-        setIsInfoFailLoginPopupOpen={setIsInfoFailLoginPopupOpen}
+        setIsOpen={setIsInfoFailLoginPopupOpen}
         errorMessage={errorMessageLogin}
+      />
+      <PopupWithError
+        isOpen={isInfoFailRegistrationPopupOpen}
+        setIsOpen={setIsInfoFailRegistrationPopupOpen}
+        errorMessage={errorMessageRegistration}
       />
     </div>
   );

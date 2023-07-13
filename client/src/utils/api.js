@@ -35,15 +35,19 @@ export function login(email, password, setErrorMessageLogin) {
     }
   });
 }
-export function register(name, email, password) {
-  return request('/signup', {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
+export function register(name, email, password, setErrorMessageLogin) {
+  return request(
+    '/signup',
+    {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, password }),
     },
-    body: JSON.stringify({ name, email, password }),
-  });
+    setErrorMessageLogin
+  );
 }
 export function getUsers() {
   return request('/users', { credentials: 'include' });

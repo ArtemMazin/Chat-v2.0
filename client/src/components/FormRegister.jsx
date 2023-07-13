@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useFormAndValidation } from '../hooks/useFormAndValidation';
 import { Spinner } from '@material-tailwind/react';
 
-export default function FormRegister({ handleSubmitRegistration, isLoading }) {
+export default function FormRegister({ handleSubmitRegistration, setIsInfoFailRegistrationPopupOpen, isLoading }) {
   const { isFormValid, errors, handleChangeValidation, inputsValid, setInputsValid, values } = useFormAndValidation();
   const { name, email, password } = values;
 
@@ -39,7 +39,10 @@ export default function FormRegister({ handleSubmitRegistration, isLoading }) {
             value={name || ''}
             className='placeholder:text-center'
             placeholder='Введите имя'
-            onChange={handleChangeValidation}
+            onChange={(e) => {
+              handleChangeValidation(e);
+              setIsInfoFailRegistrationPopupOpen(false);
+            }}
             required
           />
           <span className='block h-8 text-xs text-red-700 overflow-hidden'></span>
@@ -50,7 +53,10 @@ export default function FormRegister({ handleSubmitRegistration, isLoading }) {
             value={email || ''}
             className={`placeholder:text-center ${!inputsValid.email ? 'border-b-2 border-b-red-700' : ''}`}
             placeholder='Введите email'
-            onChange={handleChangeValidation}
+            onChange={(e) => {
+              handleChangeValidation(e);
+              setIsInfoFailRegistrationPopupOpen(false);
+            }}
             required
           />
           <span className='block h-8 text-xs text-red-700 overflow-hidden'>{errors.email || ''}</span>
@@ -61,7 +67,10 @@ export default function FormRegister({ handleSubmitRegistration, isLoading }) {
             value={password || ''}
             className={`placeholder:text-center ${!inputsValid.password ? 'border-b-2 border-b-red-700' : ''}`}
             placeholder='Введите пароль'
-            onChange={handleChangeValidation}
+            onChange={(e) => {
+              handleChangeValidation(e);
+              setIsInfoFailRegistrationPopupOpen(false);
+            }}
             minLength='6'
             required
           />
