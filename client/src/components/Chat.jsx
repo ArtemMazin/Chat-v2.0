@@ -1,6 +1,16 @@
 import { Card } from '@material-tailwind/react';
+import { useEffect, useRef } from 'react';
 
 const Chat = ({ messageList, currentUser }) => {
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+  useEffect(() => {
+    scrollToBottom();
+  }, [messageList]);
+
   return (
     <Card className='flex grow overflow-y-scroll rounded'>
       <ul className='px-10 flex flex-col list-none'>
@@ -37,6 +47,7 @@ const Chat = ({ messageList, currentUser }) => {
             </li>
           )
         )}
+        <div ref={messagesEndRef} />
       </ul>
     </Card>
   );

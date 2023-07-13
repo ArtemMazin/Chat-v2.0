@@ -10,7 +10,6 @@ const Main = ({
   handleEditAvatarClick,
   message,
   setMessage,
-  messageOwner,
   messageList,
   handleMessage,
 }) => {
