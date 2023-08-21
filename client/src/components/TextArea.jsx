@@ -6,7 +6,7 @@ export default function TextArea({ message, setMessage, handleMessage }) {
   const [selectedEmoji, setSelectedEmoji] = useState('');
   const [emojiIsOpen, setEmojiIsOpen] = useState(false);
 
-  useEffect(() => setMessage(selectedEmoji.emoji), [selectedEmoji]);
+  useEffect(() => setMessage((prev) => `${prev || ''} ${selectedEmoji.emoji || ''}`), [selectedEmoji, setMessage]);
 
   function handleEmojiSelect(emoji) {
     setSelectedEmoji(emoji);
