@@ -17,20 +17,23 @@
 
 /* W3C standard
    сейчас только для Firefox */
-   * {
-    scrollbar-width: thin;
-    scrollbar-color: #fffaf0 #970c0a;
-  }
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #fffaf0 #970c0a;
+}
 
-  /* для Chrome/Edge/Safari */
-  *::-webkit-scrollbar {
+/* для Chrome/Edge/Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+*::-webkit-scrollbar-track {
+  background: #fff;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: #dbeafe;
+  border-radius: 5px;
+}
 
-    width: 8px;
-  }
-  *::-webkit-scrollbar-track {
-    background: #fff;
-  }
-  *::-webkit-scrollbar-thumb {
-    background-color: #dbeafe;
-    border-radius: 5px;
-  }
+.EmojiPickerReact button.epr-emoji .epr-emoji-native {
+  font-size: 22px;
+}

@@ -1,7 +1,20 @@
 import { Button, IconButton, Input } from '@material-tailwind/react';
-import { LinkIcon } from '@heroicons/react/24/outline';
+import EmojiPicker from 'emoji-picker-react';
+import { useEffect, useState } from 'react';
 
 export default function TextArea({ message, setMessage, handleMessage }) {
+  const [selectedEmoji, setSelectedEmoji] = useState('');
+  const [emojiIsOpen, setEmojiIsOpen] = useState(false);
+
+  useEffect(() => setMessage(selectedEmoji.emoji), [selectedEmoji]);
+
+  function handleEmojiSelect(emoji) {
+    setSelectedEmoji(emoji);
+    setEmojiIsOpen(false);
+  }
+  function handleEmojiButton() {
+    setEmojiIsOpen(!emojiIsOpen);
+  }
   return (
     <form
       className='relative'
@@ -12,22 +25,31 @@ export default function TextArea({ message, setMessage, handleMessage }) {
         value={message || ''}
         onChange={(e) => setMessage(e.target.value)}
       />
-      <div className='w-full flex justify-between py-1.5'>
+      <div className='w-full relative flex justify-between py-1.5'>
         <IconButton
-          variant='text'
-          color='blue-gray'
-          size='sm'>
-          <LinkIcon
-            strokeWidth={2}
-            className='w-4 h-4'
-          />
+          size='sm'
+          className='rounded-md text-lg'
+          onClick={handleEmojiButton}>
+          &#128512;
         </IconButton>
+        {emojiIsOpen && (
+          <div className='absolute bottom-full left-0'>
+            <EmojiPicker
+              height={200}
+              searchDisabled={true}
+              previewConfig={{ showPreview: false }}
+              emojiStyle='native'
+              onEmojiClick={handleEmojiSelect}
+            />
+          </div>
+        )}
         <div className='flex gap-2'>
           <Button
             size='sm'
             color='red'
             variant='text'
-            className='rounded-md'>
+            className='rounded-md'
+            onClick={() => setMessage('')}>
             Отмена
           </Button>
           <Button

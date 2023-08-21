@@ -18,8 +18,7 @@ const register = (req, res, next) => {
       email,
       password: hash,
     }).then((user) => {
-      res.status(201)
-        .send({ data: user.toJSON() });
+      res.status(201).send({ data: user.toJSON() });
     }))
     .catch((err) => {
       if (err.code === 11000) {
@@ -63,17 +62,20 @@ const getProfile = (req, res, next) => {
 };
 
 const logout = (req, res) => {
-  res.clearCookie('jwt')
-    .send({ message: 'Выход' });
+  res.clearCookie('jwt').send({ message: 'Выход' });
 };
 
 const updateProfile = (req, res, next) => {
   const { avatar, name, about } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { avatar, name, about }, {
-    new: true, // обработчик then получит на вход обновлённую запись
-    runValidators: true, // данные будут валидированы перед изменением
-  })
+  User.findByIdAndUpdate(
+    req.user._id,
+    { avatar, name, about },
+    {
+      new: true, // обработчик then получит на вход обновлённую запись
+      runValidators: true, // данные будут валидированы перед изменением
+    },
+  )
     .then((user) => res.send({ data: user }))
     .catch(next);
 };

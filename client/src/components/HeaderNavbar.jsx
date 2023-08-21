@@ -21,8 +21,9 @@ export default function HeaderNavbar({ currentUser, onLogout, handleEditAvatarCl
       <Button
         type='button'
         onClick={signOut}
-        className='max-h-10'>
-        Left the room
+        size='sm'
+        className='rounded-md'>
+        Выйти
       </Button>
     </Navbar>
   );
