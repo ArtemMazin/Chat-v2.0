@@ -10,7 +10,7 @@ export default function HeaderNavbar({ currentUser, onLogout, handleEditAvatarCl
     navigate('/sign-in', { replace: 'true' });
   }
   return (
-    <Navbar className='p-2 max-w-full flex justify-between items-center rounded'>
+    <Navbar className='px-8 pt-2 pb-2 max-w-full flex justify-between items-center rounded'>
       <Avatar
         src={currentUser.avatar}
         alt='Профиль'

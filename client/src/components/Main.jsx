@@ -15,28 +15,30 @@ const Main = ({
   handleMessage,
 }) => {
   return (
-    <div className='h-screen px-8 pt-20 pb-2 flex flex-col gap-2 overflow-hidden bg-blue-50'>
+    <div className='px-8 pt-2 pb-2 h-screen flex flex-col gap-2 bg-blue-50'>
       <HeaderNavbar
         currentUser={currentUser}
         onLogout={onLogout}
         handleEditAvatarClick={handleEditAvatarClick}
       />
-      <div className='h-full flex gap-2'>
-        <Sidebar
-          users={users}
-          currentUser={currentUser}
-        />
-        <div className='h-full w-full flex flex-col gap-2'>
-          <Chat
-            messageList={messageList}
-            messagesDB={messagesDB}
+      <div className='flex-auto flex flex-col overflow-hidden'>
+        <div className='h-full flex gap-2'>
+          <Sidebar
+            users={users}
             currentUser={currentUser}
           />
-          <TextArea
-            setMessage={setMessage}
-            handleMessage={handleMessage}
-            message={message}
-          />
+          <div className='w-full flex flex-col gap-2'>
+            <Chat
+              messageList={messageList}
+              messagesDB={messagesDB}
+              currentUser={currentUser}
+            />
+            <TextArea
+              setMessage={setMessage}
+              handleMessage={handleMessage}
+              message={message}
+            />
+          </div>
         </div>
       </div>
     </div>
