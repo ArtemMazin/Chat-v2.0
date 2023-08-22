@@ -174,6 +174,24 @@ export default function App() {
           }
         />
         <Route
+          path='/users/:id'
+          element={
+            <ProtectedRouteElement
+              element={Main}
+              loggedIn={loggedIn}
+              users={users}
+              onLogout={onLogout}
+              currentUser={currentUser}
+              message={message}
+              messagesDB={messagesDB}
+              setMessage={setMessage}
+              handleMessage={handleMessage}
+              messageList={messageList}
+              handleEditAvatarClick={handleEditAvatarClick}
+            />
+          }
+        />
+        <Route
           path='*'
           element={
             <Navigate

@@ -1,5 +1,6 @@
 import { List, Card } from '@material-tailwind/react';
 import UserInfo from './UserInfo';
+import { Link } from 'react-router-dom';
 
 export default function Sidebar({ users, currentUser }) {
   return (
@@ -10,7 +11,9 @@ export default function Sidebar({ users, currentUser }) {
           .filter((user) => user._id !== currentUser._id)
           .map((user) => (
             <li key={user._id}>
-              <UserInfo user={user} />
+              <Link to={'users/' + user._id}>
+                <UserInfo user={user} />
+              </Link>
             </li>
           ))}
       </List>
