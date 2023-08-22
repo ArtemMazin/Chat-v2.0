@@ -94,7 +94,7 @@ const Chat = ({ messageList, messagesDB, currentUser }) => {
           </>
         </Card>
       ) : (
-        <Card className='flex flex-auto overflow-y-scroll rounded'></Card>
+        <Card className='flex flex-auto overflow-y-scroll rounded'>User</Card>
       )}
     </>
   );
