@@ -13,6 +13,8 @@ const Main = ({
   setMessage,
   messageList,
   handleMessage,
+  setSelectedUser,
+  handlePrivateMessage,
 }) => {
   return (
     <div className='px-8 pt-2 pb-2 h-screen flex flex-col gap-2 bg-blue-50'>
@@ -26,6 +28,7 @@ const Main = ({
           <Sidebar
             users={users}
             currentUser={currentUser}
+            setSelectedUser={setSelectedUser}
           />
           <div className='w-full flex flex-col gap-2'>
             <Chat
@@ -37,6 +40,7 @@ const Main = ({
               setMessage={setMessage}
               handleMessage={handleMessage}
               message={message}
+              handlePrivateMessage={handlePrivateMessage}
             />
           </div>
         </div>

@@ -2,7 +2,7 @@ import { Button, IconButton, Input } from '@material-tailwind/react';
 import EmojiPicker from 'emoji-picker-react';
 import { useEffect, useState } from 'react';
 
-export default function TextArea({ message, setMessage, handleMessage }) {
+export default function TextArea({ message, setMessage, handleMessage, handlePrivateMessage }) {
   const [selectedEmoji, setSelectedEmoji] = useState('');
   const [emojiIsOpen, setEmojiIsOpen] = useState(false);
 
@@ -18,7 +18,7 @@ export default function TextArea({ message, setMessage, handleMessage }) {
   return (
     <form
       className='relative'
-      onSubmit={handleMessage}>
+      onSubmit={handlePrivateMessage}>
       <Input
         variant='outlined'
         label='Сообщение'

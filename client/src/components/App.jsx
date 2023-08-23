@@ -16,6 +16,7 @@ const socket = io('http://localhost:5000', {
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
+  const [selectedUser, setSelectedUser] = useState('');
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
@@ -39,12 +40,31 @@ export default function App() {
     socket.on('messageList', ({ message, currentUser }) => {
       setMessageList((_state) => [..._state, { message, currentUser }]);
     });
+    socket.on('privateMessage', ({ message, from }) => {
+      console.log(message, from);
+      // setMessageList((_state) => [..._state, { message, from }]);
+    });
   }, []);
 
   function handleMessage(e) {
     e.preventDefault();
     socket.emit('sendMessage', { message, currentUser });
     setMessage('');
+  }
+
+  function handlePrivateMessage(e) {
+    e.preventDefault();
+    if (selectedUser) {
+      socket.emit('privateMessage', {
+        message,
+        to: selectedUser,
+      });
+
+      // this.selectedUser.messages.push({
+      //   message,
+      //   fromSelf: true,
+      // });
+    }
   }
 
   function handleEditAvatarClick() {
@@ -170,6 +190,7 @@ export default function App() {
               handleMessage={handleMessage}
               messageList={messageList}
               handleEditAvatarClick={handleEditAvatarClick}
+              setSelectedUser={setSelectedUser}
             />
           }
         />
@@ -188,6 +209,7 @@ export default function App() {
               handleMessage={handleMessage}
               messageList={messageList}
               handleEditAvatarClick={handleEditAvatarClick}
+              handlePrivateMessage={handlePrivateMessage}
             />
           }
         />

@@ -18,9 +18,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     credentials: true,
-    origin: [
-      'http://localhost:3000',
-    ],
+    origin: ['http://localhost:3000'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   },
 });
@@ -31,13 +29,13 @@ const limiter = rateLimit({
   legacyHeaders: false, // Disable the `X-RateLimit-*` headers
   message: 'Слишком много запросов с данного IP, повторите попытку позднее',
 });
-app.use(cors({
-  credentials: true,
-  origin: [
-    'http://localhost:3000',
-  ],
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-}));
+app.use(
+  cors({
+    credentials: true,
+    origin: ['http://localhost:3000'],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  })
+);
 // express-rate-limit ограничивает количество запросов
 app.use(limiter);
 // helmet помогает защитить приложения Express, устанавливая заголовки ответа HTTP
@@ -54,6 +52,14 @@ io.on('connection', (socket) => {
     const owner = currentUser;
     DBmessage.create({ text, owner });
     io.emit('messageList', { message, currentUser });
+  });
+  socket.on('privateMessage', ({ message, to }) => {
+    console.log(message);
+    socket.join(to);
+    io.to(to).emit('privateMessage', {
+      message,
+      from: socket.id,
+    });
   });
 });
 
