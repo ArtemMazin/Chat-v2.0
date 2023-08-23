@@ -12,7 +12,7 @@ const Chat = ({ messageList, messagesDB, currentUser }) => {
   };
   useEffect(() => {
     scrollToBottom();
-  }, [messageList, messagesDB]);
+  }, [messageList, messagesDB, location]);
 
   return (
     <>

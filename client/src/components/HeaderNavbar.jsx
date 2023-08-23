@@ -1,5 +1,5 @@
 import { Button, Navbar, Avatar } from '@material-tailwind/react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function HeaderNavbar({ currentUser, onLogout, handleEditAvatarClick }) {
   const navigate = useNavigate();
@@ -18,13 +18,24 @@ export default function HeaderNavbar({ currentUser, onLogout, handleEditAvatarCl
         onClick={handleEditAvatarClick}
         className='cursor-pointer'
       />
-      <Button
-        type='button'
-        onClick={signOut}
-        size='sm'
-        className='rounded-md'>
-        Выйти
-      </Button>
+      <div className='flex gap-2'>
+        <Link to={'/'}>
+          <Button
+            type='button'
+            size='sm'
+            className='rounded-md'>
+            ЧАТ
+          </Button>
+        </Link>
+
+        <Button
+          type='button'
+          onClick={signOut}
+          size='sm'
+          className='rounded-md'>
+          Выйти
+        </Button>
+      </div>
     </Navbar>
   );
 }
