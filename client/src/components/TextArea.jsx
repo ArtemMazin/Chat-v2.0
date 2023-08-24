@@ -1,10 +1,13 @@
 import { Button, IconButton, Input } from '@material-tailwind/react';
 import EmojiPicker from 'emoji-picker-react';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export default function TextArea({ message, setMessage, handleMessage, handlePrivateMessage }) {
   const [selectedEmoji, setSelectedEmoji] = useState('');
   const [emojiIsOpen, setEmojiIsOpen] = useState(false);
+
+  const location = useLocation();
 
   useEffect(() => setMessage((prev) => `${prev || ''} ${selectedEmoji.emoji || ''}`), [selectedEmoji, setMessage]);
 
@@ -15,10 +18,14 @@ export default function TextArea({ message, setMessage, handleMessage, handlePri
   function handleEmojiButton() {
     setEmojiIsOpen(!emojiIsOpen);
   }
+  function handleSubmit(e) {
+    location.pathname === '/' ? handleMessage(e) : handlePrivateMessage(e);
+  }
+
   return (
     <form
       className='relative'
-      onSubmit={handlePrivateMessage}>
+      onSubmit={handleSubmit}>
       <Input
         variant='outlined'
         label='Сообщение'

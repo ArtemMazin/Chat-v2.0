@@ -2,7 +2,7 @@ import { Card } from '@material-tailwind/react';
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const Chat = ({ messageList, messagesDB, currentUser }) => {
+const Chat = ({ messageList, messagesDB, currentUser, privateMessage, selectedUser }) => {
   const messagesEndRef = useRef(null);
 
   const location = useLocation();
@@ -16,7 +16,11 @@ const Chat = ({ messageList, messagesDB, currentUser }) => {
 
   return (
     <>
-      {location.pathname === '/' ? (
+      {location.pathname === `/users/${selectedUser}` ? (
+        <Card className='flex flex-auto overflow-y-scroll rounded'>
+          {selectedUser === privateMessage.from ? privateMessage.message : ''}
+        </Card>
+      ) : (
         <Card className='flex flex-auto overflow-y-scroll rounded'>
           <>
             <ul className='px-10 flex flex-col list-none'>
@@ -93,8 +97,6 @@ const Chat = ({ messageList, messagesDB, currentUser }) => {
             </ul>
           </>
         </Card>
-      ) : (
-        <Card className='flex flex-auto overflow-y-scroll rounded'>User</Card>
       )}
     </>
   );

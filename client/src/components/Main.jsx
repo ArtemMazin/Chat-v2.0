@@ -15,6 +15,8 @@ const Main = ({
   handleMessage,
   setSelectedUser,
   handlePrivateMessage,
+  privateMessage,
+  selectedUser,
 }) => {
   return (
     <div className='px-8 pt-2 pb-2 h-screen flex flex-col gap-2 bg-blue-50'>
@@ -35,6 +37,8 @@ const Main = ({
               messageList={messageList}
               messagesDB={messagesDB}
               currentUser={currentUser}
+              privateMessage={privateMessage}
+              selectedUser={selectedUser}
             />
             <TextArea
               setMessage={setMessage}

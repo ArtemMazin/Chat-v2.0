@@ -22,6 +22,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [message, setMessage] = useState('');
+  const [privateMessage, setPrivateMessage] = useState({ from: '', message: '' });
   const [messageList, setMessageList] = useState([]);
   const [messagesDB, setMessagesDB] = useState([]);
   const [isInfoFailLoginPopupOpen, setIsInfoFailLoginPopupOpen] = useState(false);
@@ -40,11 +41,14 @@ export default function App() {
     socket.on('messageList', ({ message, currentUser }) => {
       setMessageList((_state) => [..._state, { message, currentUser }]);
     });
+  }, []);
+
+  useEffect(() => {
     socket.on('privateMessage', ({ message, from }) => {
-      console.log(message, from);
+      setPrivateMessage({ from: selectedUser, message: message });
       // setMessageList((_state) => [..._state, { message, from }]);
     });
-  }, []);
+  }, [selectedUser]);
 
   function handleMessage(e) {
     e.preventDefault();
@@ -54,16 +58,12 @@ export default function App() {
 
   function handlePrivateMessage(e) {
     e.preventDefault();
+
     if (selectedUser) {
       socket.emit('privateMessage', {
         message,
         to: selectedUser,
       });
-
-      // this.selectedUser.messages.push({
-      //   message,
-      //   fromSelf: true,
-      // });
     }
   }
 
@@ -191,6 +191,7 @@ export default function App() {
               messageList={messageList}
               handleEditAvatarClick={handleEditAvatarClick}
               setSelectedUser={setSelectedUser}
+              privateMessage={privateMessage}
             />
           }
         />
@@ -210,6 +211,9 @@ export default function App() {
               messageList={messageList}
               handleEditAvatarClick={handleEditAvatarClick}
               handlePrivateMessage={handlePrivateMessage}
+              setSelectedUser={setSelectedUser}
+              privateMessage={privateMessage}
+              selectedUser={selectedUser}
             />
           }
         />
