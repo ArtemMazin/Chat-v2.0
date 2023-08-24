@@ -1,8 +1,9 @@
 import { Card } from '@material-tailwind/react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-const Chat = ({ messageList, messagesDB, currentUser, privateMessage, selectedUser }) => {
+const Chat = ({ messageList, messagesDB, currentUser, privateMessageList, selectedUser }) => {
+  const [filteredMessages, setFilteredMessages] = useState([]);
   const messagesEndRef = useRef(null);
 
   const location = useLocation();
@@ -13,12 +14,35 @@ const Chat = ({ messageList, messagesDB, currentUser, privateMessage, selectedUs
   useEffect(() => {
     scrollToBottom();
   }, [messageList, messagesDB, location]);
+  useEffect(() => {
+    privateMessageList.length > 0 &&
+      setFilteredMessages(privateMessageList.filter((mess) => mess.from === selectedUser && mess));
+  }, [privateMessageList, selectedUser, setFilteredMessages]);
 
   return (
     <>
       {location.pathname === `/users/${selectedUser}` ? (
         <Card className='flex flex-auto overflow-y-scroll rounded'>
-          {selectedUser === privateMessage.from ? privateMessage.message : ''}
+          <ul className='px-10 flex flex-col list-none'>
+            {privateMessageList.length > 0 &&
+              filteredMessages.length > 0 &&
+              filteredMessages.map((message, i) => {
+                return (
+                  selectedUser === message.from && (
+                    <li
+                      key={i}
+                      className='m-1 w-full flex justify-end'>
+                      <div className='flex w-full'>
+                        <div className='px-2 py-1 w-full flex flex-col text-sm hover:bg-blue-50'>
+                          <p className='self-end'>{message.message}</p>
+                        </div>
+                      </div>
+                    </li>
+                  )
+                );
+              })}
+            <div ref={messagesEndRef} />
+          </ul>
         </Card>
       ) : (
         <Card className='flex flex-auto overflow-y-scroll rounded'>

@@ -22,7 +22,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [message, setMessage] = useState('');
-  const [privateMessage, setPrivateMessage] = useState({ from: '', message: '' });
+  const [privateMessageList, setPrivateMessageList] = useState([]);
   const [messageList, setMessageList] = useState([]);
   const [messagesDB, setMessagesDB] = useState([]);
   const [isInfoFailLoginPopupOpen, setIsInfoFailLoginPopupOpen] = useState(false);
@@ -45,10 +45,10 @@ export default function App() {
 
   useEffect(() => {
     socket.on('privateMessage', ({ message, from }) => {
-      setPrivateMessage({ from: selectedUser, message: message });
-      // setMessageList((_state) => [..._state, { message, from }]);
+      setPrivateMessageList((prev) => [...prev, { from: selectedUser, message: message }]);
     });
   }, [selectedUser]);
+  console.log(privateMessageList);
 
   function handleMessage(e) {
     e.preventDefault();
@@ -191,7 +191,7 @@ export default function App() {
               messageList={messageList}
               handleEditAvatarClick={handleEditAvatarClick}
               setSelectedUser={setSelectedUser}
-              privateMessage={privateMessage}
+              privateMessageList={privateMessageList}
             />
           }
         />
@@ -212,7 +212,7 @@ export default function App() {
               handleEditAvatarClick={handleEditAvatarClick}
               handlePrivateMessage={handlePrivateMessage}
               setSelectedUser={setSelectedUser}
-              privateMessage={privateMessage}
+              privateMessageList={privateMessageList}
               selectedUser={selectedUser}
             />
           }

@@ -15,7 +15,7 @@ const Main = ({
   handleMessage,
   setSelectedUser,
   handlePrivateMessage,
-  privateMessage,
+  privateMessageList,
   selectedUser,
 }) => {
   return (
@@ -37,7 +37,7 @@ const Main = ({
               messageList={messageList}
               messagesDB={messagesDB}
               currentUser={currentUser}
-              privateMessage={privateMessage}
+              privateMessageList={privateMessageList}
               selectedUser={selectedUser}
             />
             <TextArea
