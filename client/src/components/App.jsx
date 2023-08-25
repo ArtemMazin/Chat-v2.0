@@ -42,6 +42,9 @@ export default function App() {
       setMessageList((_state) => [..._state, { message, currentUser }]);
     });
   }, []);
+  useEffect(() => {
+    socket.emit('join', { user: currentUser._id });
+  }, [currentUser._id]);
 
   useEffect(() => {
     socket.on('privateMessageList', ({ message, to }) => {
