@@ -44,11 +44,10 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    socket.on('privateMessage', ({ message, from }) => {
-      setPrivateMessageList((prev) => [...prev, { from: selectedUser, message: message }]);
+    socket.on('privateMessageList', ({ message, to }) => {
+      setPrivateMessageList((prev) => [...prev, { from: to, message: message }]);
     });
-  }, [selectedUser]);
-  console.log(privateMessageList);
+  }, []);
 
   function handleMessage(e) {
     e.preventDefault();
@@ -64,6 +63,7 @@ export default function App() {
         message,
         to: selectedUser,
       });
+      setMessage('');
     }
   }
 

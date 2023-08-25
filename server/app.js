@@ -54,12 +54,8 @@ io.on('connection', (socket) => {
     io.emit('messageList', { message, currentUser });
   });
   socket.on('privateMessage', ({ message, to }) => {
-    console.log(message);
     socket.join(to);
-    io.to(to).emit('privateMessage', {
-      message,
-      from: socket.id,
-    });
+    io.to(to).emit('privateMessageList', { message, to });
   });
 });
 
