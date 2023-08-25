@@ -47,8 +47,8 @@ export default function App() {
   }, [currentUser._id]);
 
   useEffect(() => {
-    socket.on('privateMessageList', ({ message, to }) => {
-      setPrivateMessageList((prev) => [...prev, { from: to, message: message }]);
+    socket.on('privateMessageList', ({ message, to, id }) => {
+      setPrivateMessageList((prev) => [...prev, { from: to, id, message }]);
     });
   }, []);
 

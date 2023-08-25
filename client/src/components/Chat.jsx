@@ -6,6 +6,8 @@ const Chat = ({ messageList, messagesDB, currentUser, privateMessageList, select
   const [filteredMessages, setFilteredMessages] = useState([]);
   const messagesEndRef = useRef(null);
 
+  // console.log(currentUser._id, selectedUser);
+
   const location = useLocation();
 
   const scrollToBottom = () => {
@@ -16,7 +18,9 @@ const Chat = ({ messageList, messagesDB, currentUser, privateMessageList, select
   }, [messageList, messagesDB, location]);
   useEffect(() => {
     privateMessageList.length > 0 &&
-      setFilteredMessages(privateMessageList.filter((mess) => mess.from === selectedUser && mess));
+      setFilteredMessages(
+        privateMessageList.filter((mess) => (selectedUser === mess.from || mess.id === selectedUser) && mess)
+      );
   }, [privateMessageList, selectedUser, setFilteredMessages]);
 
   return (
@@ -28,17 +32,15 @@ const Chat = ({ messageList, messagesDB, currentUser, privateMessageList, select
               filteredMessages.length > 0 &&
               filteredMessages.map((message, i) => {
                 return (
-                  selectedUser === message.from && (
-                    <li
-                      key={i}
-                      className='m-1 w-full flex justify-end'>
-                      <div className='flex w-full'>
-                        <div className='px-2 py-1 w-full flex flex-col text-sm hover:bg-blue-50'>
-                          <p className='self-end'>{message.message}</p>
-                        </div>
+                  <li
+                    key={i}
+                    className='m-1 w-full flex justify-end'>
+                    <div className='flex w-full'>
+                      <div className='px-2 py-1 w-full flex flex-col text-sm hover:bg-blue-50'>
+                        <p className='self-end'>{message.message}</p>
                       </div>
-                    </li>
-                  )
+                    </div>
+                  </li>
                 );
               })}
             <div ref={messagesEndRef} />
