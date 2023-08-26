@@ -43,12 +43,12 @@ export default function App() {
     });
   }, []);
   useEffect(() => {
-    socket.emit('join', { user: currentUser._id });
-  }, [currentUser._id]);
+    socket.on('join', ({ message }) => setMessageList((_state) => [..._state, { systemMessage: message }]));
+  }, []);
 
   useEffect(() => {
-    socket.on('privateMessageList', ({ message, to, id }) => {
-      setPrivateMessageList((prev) => [...prev, { from: to, id, message }]);
+    socket.on('privateMessageList', ({ message, selectedUserID, roomID }) => {
+      setPrivateMessageList((prev) => [...prev, { selectedUserID, roomID, message }]);
     });
   }, []);
 
@@ -64,7 +64,7 @@ export default function App() {
     if (selectedUser) {
       socket.emit('privateMessage', {
         message,
-        to: selectedUser,
+        selectedUserID: selectedUser,
       });
       setMessage('');
     }
@@ -143,6 +143,8 @@ export default function App() {
           setUsers(usersArray.data);
           setCurrentUser(userInfo.data);
           setMessagesDB(messages.data);
+
+          socket.emit('join', { user: userInfo.data });
         })
         .catch(console.error);
     }

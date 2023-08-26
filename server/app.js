@@ -47,11 +47,13 @@ app.use(express.urlencoded({ extended: true }));
 mongoose.connect('mongodb://127.0.0.1:27017/chatdb');
 
 io.on('connection', (socket) => {
-  let id = '';
+  let roomID = '';
+  let userName = '';
   socket.on('join', (data) => {
-    id = data.user;
-    socket.join(data.user);
-    // console.log(`${data.user} присоединился`);
+    roomID = data.user._id;
+    userName = data.user.name;
+    socket.join(roomID);
+    io.emit('join', { message: `${userName} присоединился` });
   });
 
   socket.on('sendMessage', ({ message, currentUser }) => {
@@ -61,10 +63,8 @@ io.on('connection', (socket) => {
     io.emit('messageList', { message, currentUser });
   });
 
-  socket.on('privateMessage', ({ message, to }) => {
-    console.log(id, to);
-
-    io.to(id).to(to).emit('privateMessageList', { message, to, id });
+  socket.on('privateMessage', ({ message, selectedUserID }) => {
+    io.to(roomID).to(selectedUserID).emit('privateMessageList', { message, selectedUserID, roomID });
   });
 });
 
