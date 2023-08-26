@@ -5,6 +5,7 @@ import FormRegister from './FormRegister';
 import ProtectedRouteElement from './ProtectedRouteElement';
 import Main from './Main';
 import { changeProfileData, getProfileData, getUsers, getMessages, login, logout, register } from '../utils/api';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import EditAvatarPopup from './EditAvatarPopup';
 import PopupWithError from './PopupWithError';
 
@@ -21,7 +22,7 @@ export default function App() {
   const [errorMessageRegistration, setErrorMessageRegistration] = useState('');
 
   const navigate = useNavigate();
-  // console.count('count');
+  console.count('count App');
 
   //токен
   useEffect(() => {
@@ -112,84 +113,83 @@ export default function App() {
   }
 
   return (
-    <div className='App'>
-      <Routes>
-        <Route
-          path='/sign-up'
-          element={
-            <FormRegister
-              handleSubmitRegistration={handleSubmitRegistration}
-              setIsInfoFailRegistrationPopupOpen={setIsInfoFailRegistrationPopupOpen}
-              isLoading={isLoading}
-            />
-          }
-        />
-        <Route
-          path='/sign-in'
-          element={
-            <FormLogin
-              handleSubmitLogin={handleSubmitLogin}
-              setIsInfoFailLoginPopupOpen={setIsInfoFailLoginPopupOpen}
-              isLoading={isLoading}
-            />
-          }
-        />
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className='App'>
+        <Routes>
+          <Route
+            path='/sign-up'
+            element={
+              <FormRegister
+                handleSubmitRegistration={handleSubmitRegistration}
+                setIsInfoFailRegistrationPopupOpen={setIsInfoFailRegistrationPopupOpen}
+                isLoading={isLoading}
+              />
+            }
+          />
+          <Route
+            path='/sign-in'
+            element={
+              <FormLogin
+                handleSubmitLogin={handleSubmitLogin}
+                setIsInfoFailLoginPopupOpen={setIsInfoFailLoginPopupOpen}
+                isLoading={isLoading}
+              />
+            }
+          />
 
-        <Route
-          path='/'
-          element={
-            <ProtectedRouteElement
-              element={Main}
-              loggedIn={loggedIn}
-              users={users}
-              onLogout={onLogout}
-              currentUser={currentUser}
-              messagesDB={messagesDB}
-              handleEditAvatarClick={handleEditAvatarClick}
-            />
-          }
+          <Route
+            path='/'
+            element={
+              <ProtectedRouteElement
+                element={Main}
+                loggedIn={loggedIn}
+                users={users}
+                onLogout={onLogout}
+                messagesDB={messagesDB}
+                handleEditAvatarClick={handleEditAvatarClick}
+              />
+            }
+          />
+          <Route
+            path='/users/:id'
+            element={
+              <ProtectedRouteElement
+                element={Main}
+                loggedIn={loggedIn}
+                users={users}
+                onLogout={onLogout}
+                messagesDB={messagesDB}
+                handleEditAvatarClick={handleEditAvatarClick}
+              />
+            }
+          />
+          <Route
+            path='*'
+            element={
+              <Navigate
+                to='/'
+                replace
+              />
+            }
+          />
+        </Routes>
+        <EditAvatarPopup
+          isOpen={handleEditAvatarClick}
+          isEditAvatarPopupOpen={isEditAvatarPopupOpen}
+          handleUpdateUser={handleUpdateUser}
+          isLoading={isLoading}
         />
-        <Route
-          path='/users/:id'
-          element={
-            <ProtectedRouteElement
-              element={Main}
-              loggedIn={loggedIn}
-              users={users}
-              onLogout={onLogout}
-              currentUser={currentUser}
-              messagesDB={messagesDB}
-              handleEditAvatarClick={handleEditAvatarClick}
-            />
-          }
+        <PopupWithError
+          isOpen={isInfoFailLoginPopupOpen}
+          setIsOpen={setIsInfoFailLoginPopupOpen}
+          errorMessage={errorMessageLogin}
         />
-        <Route
-          path='*'
-          element={
-            <Navigate
-              to='/'
-              replace
-            />
-          }
+        <PopupWithError
+          isOpen={isInfoFailRegistrationPopupOpen}
+          setIsOpen={setIsInfoFailRegistrationPopupOpen}
+          errorMessage={errorMessageRegistration}
         />
-      </Routes>
-      <EditAvatarPopup
-        isOpen={handleEditAvatarClick}
-        isEditAvatarPopupOpen={isEditAvatarPopupOpen}
-        currentUser={currentUser}
-        handleUpdateUser={handleUpdateUser}
-        isLoading={isLoading}
-      />
-      <PopupWithError
-        isOpen={isInfoFailLoginPopupOpen}
-        setIsOpen={setIsInfoFailLoginPopupOpen}
-        errorMessage={errorMessageLogin}
-      />
-      <PopupWithError
-        isOpen={isInfoFailRegistrationPopupOpen}
-        setIsOpen={setIsInfoFailRegistrationPopupOpen}
-        errorMessage={errorMessageRegistration}
-      />
-    </div>
+      </div>
+    </CurrentUserContext.Provider>
   );
 }

@@ -1,9 +1,11 @@
 import { Card } from '@material-tailwind/react';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-const Chat = ({ messageList, messagesDB, currentUser, privateMessageList, selectedUser }) => {
+const Chat = ({ messageList, messagesDB, privateMessageList, selectedUser }) => {
   const [filteredMessages, setFilteredMessages] = useState([]);
+  const currentUser = useContext(CurrentUserContext);
   const messagesEndRef = useRef(null);
   const privateMessageRef = useRef(null);
 

@@ -1,7 +1,11 @@
 import { List, Card } from '@material-tailwind/react';
 import UserInfo from './UserInfo';
+import { useContext } from 'react';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-export default function Sidebar({ users, currentUser, setSelectedUser }) {
+export default function Sidebar({ users, setSelectedUser }) {
+  const currentUser = useContext(CurrentUserContext);
+
   return (
     <Card className='w-80 h-full overflow-y-scroll rounded'>
       <div className='py-2 text-blue-400 text-center border-b border-b-blue-50'>Список пользователей</div>

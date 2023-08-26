@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Button, Dialog, DialogBody, Input, Textarea, Spinner } from '@material-tailwind/react';
 import { useFormAndValidation } from '../hooks/useFormAndValidation';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
-export default function EditAvatarPopup({ isOpen, isEditAvatarPopupOpen, currentUser, handleUpdateUser, isLoading }) {
+export default function EditAvatarPopup({ isOpen, isEditAvatarPopupOpen, handleUpdateUser, isLoading }) {
   const { errors, handleChangeValidation, inputsValid, setInputsValid, resetForm, values, setValues } =
     useFormAndValidation();
+
+  const currentUser = useContext(CurrentUserContext);
 
   useEffect(() => {
     //сначала очищаем форму при открытии

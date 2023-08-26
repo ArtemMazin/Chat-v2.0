@@ -1,21 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Chat from './Chat';
 import Sidebar from './Sidebar';
 import TextArea from './TextArea';
 import { io } from 'socket.io-client';
 import { useEffect, useState } from 'react';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 const socket = io('http://localhost:5000', {
   credentials: 'include',
 });
 
-const Content = ({ users, currentUser, messagesDB }) => {
+const Content = ({ users, messagesDB }) => {
   const [selectedUser, setSelectedUser] = useState('');
   const [privateMessageList, setPrivateMessageList] = useState([]);
   const [messageList, setMessageList] = useState([]);
   const [message, setMessage] = useState('');
 
-  console.count('count');
+  const currentUser = useContext(CurrentUserContext);
+
+  console.count('count Content');
 
   useEffect(() => {
     socket.emit('join', { user: currentUser });
@@ -55,14 +58,12 @@ const Content = ({ users, currentUser, messagesDB }) => {
       <div className='h-full flex gap-2'>
         <Sidebar
           users={users}
-          currentUser={currentUser}
           setSelectedUser={setSelectedUser}
         />
         <div className='w-full flex flex-col gap-2'>
           <Chat
             messageList={messageList}
             messagesDB={messagesDB}
-            currentUser={currentUser}
             privateMessageList={privateMessageList}
             selectedUser={selectedUser}
           />
