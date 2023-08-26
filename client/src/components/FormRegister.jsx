@@ -11,7 +11,7 @@ export default function FormRegister({ handleSubmitRegistration, setIsInfoFailRe
   useEffect(() => {
     //при монтировании инпуты валидны
     setInputsValid({ email: true, password: true });
-  }, []);
+  }, [setInputsValid]);
 
   return (
     <Card

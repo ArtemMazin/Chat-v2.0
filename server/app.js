@@ -50,10 +50,12 @@ io.on('connection', (socket) => {
   let roomID = '';
   let userName = '';
   socket.on('join', (data) => {
-    roomID = data.user._id;
-    userName = data.user.name;
-    socket.join(roomID);
-    io.emit('join', { message: `${userName} присоединился` });
+    if (data.user._id && data.user.name) {
+      roomID = data.user._id;
+      userName = data.user.name;
+      socket.join(roomID);
+      io.emit('join', { message: `${userName} присоединился` });
+    }
   });
 
   socket.on('sendMessage', ({ message, currentUser }) => {

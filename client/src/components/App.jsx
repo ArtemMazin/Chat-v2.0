@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
-import { io } from 'socket.io-client';
 import FormLogin from './FormLogin';
 import FormRegister from './FormRegister';
 import ProtectedRouteElement from './ProtectedRouteElement';
@@ -9,65 +8,54 @@ import { changeProfileData, getProfileData, getUsers, getMessages, login, logout
 import EditAvatarPopup from './EditAvatarPopup';
 import PopupWithError from './PopupWithError';
 
-const socket = io('http://localhost:5000', {
-  credentials: 'include',
-});
-
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-  const [selectedUser, setSelectedUser] = useState('');
   const [users, setUsers] = useState([]);
-  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [message, setMessage] = useState('');
-  const [privateMessageList, setPrivateMessageList] = useState([]);
-  const [messageList, setMessageList] = useState([]);
   const [messagesDB, setMessagesDB] = useState([]);
   const [isInfoFailLoginPopupOpen, setIsInfoFailLoginPopupOpen] = useState(false);
   const [isInfoFailRegistrationPopupOpen, setIsInfoFailRegistrationPopupOpen] = useState(false);
   const [errorMessageLogin, setErrorMessageLogin] = useState('');
   const [errorMessageRegistration, setErrorMessageRegistration] = useState('');
 
+  const navigate = useNavigate();
+  // console.count('count');
+
+  //токен
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      getUsers()
+        .then((res) => {
+          if (res) {
+            // авторизуем пользователя
+            setLoggedIn(true);
+            navigate('/', { replace: true });
+          }
+        })
+        .catch(console.error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (loggedIn) {
+      Promise.all([getUsers(), getProfileData(), getMessages()])
+        .then(([usersArray, userInfo, messages]) => {
+          setUsers(usersArray.data);
+          setCurrentUser(userInfo.data);
+          setMessagesDB(messages.data);
+        })
+        .catch(console.error);
+    }
+  }, [loggedIn]);
+
   function showInfoFailLoginPopup() {
     setIsInfoFailLoginPopupOpen(true);
   }
   function showInfoFailRegistrationPopup() {
     setIsInfoFailRegistrationPopupOpen(true);
-  }
-
-  useEffect(() => {
-    socket.on('messageList', ({ message, currentUser }) => {
-      setMessageList((_state) => [..._state, { message, currentUser }]);
-    });
-  }, []);
-  useEffect(() => {
-    socket.on('join', ({ message }) => setMessageList((_state) => [..._state, { systemMessage: message }]));
-  }, []);
-
-  useEffect(() => {
-    socket.on('privateMessageList', ({ message, selectedUserID, roomID }) => {
-      setPrivateMessageList((prev) => [...prev, { selectedUserID, roomID, message }]);
-    });
-  }, []);
-
-  function handleMessage(e) {
-    e.preventDefault();
-    socket.emit('sendMessage', { message, currentUser });
-    setMessage('');
-  }
-
-  function handlePrivateMessage(e) {
-    e.preventDefault();
-
-    if (selectedUser) {
-      socket.emit('privateMessage', {
-        message,
-        selectedUserID: selectedUser,
-      });
-      setMessage('');
-    }
   }
 
   function handleEditAvatarClick() {
@@ -116,39 +104,6 @@ export default function App() {
       })
       .finally(() => setIsLoading(false));
   };
-  //токен
-  useEffect(() => {
-    tokenCheck();
-  }, []);
-
-  function tokenCheck() {
-    const token = localStorage.getItem('token');
-    if (token) {
-      getUsers()
-        .then((res) => {
-          if (res) {
-            // авторизуем пользователя
-            setLoggedIn(true);
-            navigate('/', { replace: true });
-          }
-        })
-        .catch(console.error);
-    }
-  }
-
-  useEffect(() => {
-    if (loggedIn) {
-      Promise.all([getUsers(), getProfileData(), getMessages()])
-        .then(([usersArray, userInfo, messages]) => {
-          setUsers(usersArray.data);
-          setCurrentUser(userInfo.data);
-          setMessagesDB(messages.data);
-
-          socket.emit('join', { user: userInfo.data });
-        })
-        .catch(console.error);
-    }
-  }, [loggedIn]);
 
   function onLogout() {
     logout()
@@ -189,14 +144,8 @@ export default function App() {
               users={users}
               onLogout={onLogout}
               currentUser={currentUser}
-              message={message}
               messagesDB={messagesDB}
-              setMessage={setMessage}
-              handleMessage={handleMessage}
-              messageList={messageList}
               handleEditAvatarClick={handleEditAvatarClick}
-              setSelectedUser={setSelectedUser}
-              privateMessageList={privateMessageList}
             />
           }
         />
@@ -209,16 +158,8 @@ export default function App() {
               users={users}
               onLogout={onLogout}
               currentUser={currentUser}
-              message={message}
               messagesDB={messagesDB}
-              setMessage={setMessage}
-              handleMessage={handleMessage}
-              messageList={messageList}
               handleEditAvatarClick={handleEditAvatarClick}
-              handlePrivateMessage={handlePrivateMessage}
-              setSelectedUser={setSelectedUser}
-              privateMessageList={privateMessageList}
-              selectedUser={selectedUser}
             />
           }
         />
