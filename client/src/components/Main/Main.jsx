@@ -1,5 +1,5 @@
-import Content from './Content';
-import HeaderNavbar from './HeaderNavbar';
+import Content from '../Content/Content';
+import HeaderNavbar from '../Header/HeaderNavbar';
 
 const Main = ({ onLogout, handleEditAvatarClick, messagesDB }) => {
   return (

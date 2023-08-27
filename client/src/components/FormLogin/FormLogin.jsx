@@ -1,17 +1,17 @@
 import { Card, Input, Button, Typography } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
-import { useFormAndValidation } from '../hooks/useFormAndValidation';
+import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 import { Spinner } from '@material-tailwind/react';
 
-export default function FormRegister({ handleSubmitRegistration, setIsInfoFailRegistrationPopupOpen, isLoading }) {
+export default function FormLogin({ handleSubmitLogin, setIsInfoFailLoginPopupOpen, isLoading }) {
   const { isFormValid, errors, handleChangeValidation, inputsValid, setInputsValid, values } = useFormAndValidation();
-  const { name, email, password } = values;
+  const { email, password } = values;
 
   useEffect(() => {
     //при монтировании инпуты валидны
     setInputsValid({ email: true, password: true });
-  }, [setInputsValid]);
+  }, []);
 
   return (
     <Card
@@ -21,31 +21,17 @@ export default function FormRegister({ handleSubmitRegistration, setIsInfoFailRe
       <Typography
         variant='h4'
         color='blue-gray'>
-        Sign Up
+        Sign In
       </Typography>
       <Typography
         color='gray'
         className='mt-1 font-normal'>
-        Enter your details to registration.
+        Enter your details to login.
       </Typography>
       <form
         className='mt-8 mb-2 w-80 max-w-screen-lg sm:w-96'
-        onSubmit={(e) => handleSubmitRegistration(e, name, email, password)}>
+        onSubmit={(e) => handleSubmitLogin(e, email, password)}>
         <div className='flex flex-col gap-2'>
-          <Input
-            size='lg'
-            type='text'
-            name='name'
-            value={name || ''}
-            className='placeholder:text-center'
-            placeholder='Введите имя'
-            onChange={(e) => {
-              handleChangeValidation(e);
-              setIsInfoFailRegistrationPopupOpen(false);
-            }}
-            required
-          />
-          <span className='block h-8 text-xs text-red-700 overflow-hidden'></span>
           <Input
             size='lg'
             type='email'
@@ -55,7 +41,7 @@ export default function FormRegister({ handleSubmitRegistration, setIsInfoFailRe
             placeholder='Введите email'
             onChange={(e) => {
               handleChangeValidation(e);
-              setIsInfoFailRegistrationPopupOpen(false);
+              setIsInfoFailLoginPopupOpen(false);
             }}
             required
           />
@@ -69,7 +55,7 @@ export default function FormRegister({ handleSubmitRegistration, setIsInfoFailRe
             placeholder='Введите пароль'
             onChange={(e) => {
               handleChangeValidation(e);
-              setIsInfoFailRegistrationPopupOpen(false);
+              setIsInfoFailLoginPopupOpen(false);
             }}
             minLength='6'
             required
@@ -82,16 +68,16 @@ export default function FormRegister({ handleSubmitRegistration, setIsInfoFailRe
           fullWidth
           type='submit'
           disabled={!isFormValid}>
-          {!isLoading ? 'Зарегистрироваться' : <Spinner />}
+          {!isLoading ? 'Войти' : <Spinner />}
         </Button>
         <Typography
           color='gray'
           className='mt-4 text-center font-normal'>
-          Go to login{' '}
+          Go to registration{' '}
           <Link
-            to={'/sign-in'}
+            to={'/sign-up'}
             className='font-medium text-blue-500 transition-colors hover:text-blue-700'>
-            Sign In
+            Sign Up
           </Link>
         </Typography>
       </form>

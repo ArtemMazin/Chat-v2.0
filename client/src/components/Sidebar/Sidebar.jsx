@@ -1,7 +1,7 @@
 import { List, Card } from '@material-tailwind/react';
-import UserInfo from './UserInfo';
+import UserInfo from '../UserInfo/UserInfo';
 import { useContext, useMemo } from 'react';
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 export default function Sidebar({ users, setSelectedUser }) {
   const currentUser = useContext(CurrentUserContext);

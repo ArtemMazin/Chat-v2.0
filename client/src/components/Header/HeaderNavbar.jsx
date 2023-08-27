@@ -1,7 +1,7 @@
 import { Button, Navbar, Avatar } from '@material-tailwind/react';
 import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 export default function HeaderNavbar({ onLogout, handleEditAvatarClick }) {
   const navigate = useNavigate();

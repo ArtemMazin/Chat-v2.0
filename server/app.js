@@ -69,7 +69,7 @@ io.on('connection', (socket) => {
     const text = message;
     const owner = currentUser;
     DBmessage.create({ text, owner });
-    io.emit('messageList', { message, currentUser });
+    io.emit('messageList', { message, owner });
   });
 
   socket.on('privateMessage', ({ message, selectedUserID }) => {

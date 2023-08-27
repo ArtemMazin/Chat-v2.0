@@ -3,9 +3,10 @@ import EmojiPicker from 'emoji-picker-react';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-export default function TextArea({ message, setMessage, handleMessage, handlePrivateMessage }) {
+export default function TextArea({ handleMessage, handlePrivateMessage }) {
   const [selectedEmoji, setSelectedEmoji] = useState('');
   const [emojiIsOpen, setEmojiIsOpen] = useState(false);
+  const [message, setMessage] = useState('');
 
   const location = useLocation();
 
@@ -19,7 +20,8 @@ export default function TextArea({ message, setMessage, handleMessage, handlePri
     setEmojiIsOpen(!emojiIsOpen);
   }
   function handleSubmit(e) {
-    location.pathname === '/' ? handleMessage(e) : handlePrivateMessage(e);
+    location.pathname === '/' ? handleMessage(e, message) : handlePrivateMessage(e, message);
+    setMessage('');
   }
 
   return (
