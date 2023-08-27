@@ -12,6 +12,7 @@ import handleErrors from './errors/handleErrors';
 import DBmessage from './models/message';
 
 const { PORT = 5000 } = process.env;
+const users = [];
 
 const app = express();
 const server = http.createServer(app);
@@ -48,13 +49,19 @@ mongoose.connect('mongodb://127.0.0.1:27017/chatdb');
 
 io.on('connection', (socket) => {
   let roomID = '';
-  let userName = '';
+
   socket.on('join', (data) => {
     if (data.user._id && data.user.name) {
+      const userExists = users.some((user) => user._id === data.user._id);
+      if (!userExists) {
+        users.push(data.user);
+      }
       roomID = data.user._id;
-      userName = data.user.name;
+
       socket.join(roomID);
-      io.emit('join', { message: `${userName} присоединился` });
+      const MESSAGE_SYSTEM = `${data.user.name} присоединился`;
+
+      io.emit('join', { MESSAGE_SYSTEM, users });
     }
   });
 

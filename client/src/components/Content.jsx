@@ -10,11 +10,12 @@ const socket = io('http://localhost:5000', {
   credentials: 'include',
 });
 
-const Content = ({ users, messagesDB }) => {
+const Content = ({ messagesDB }) => {
   const [selectedUser, setSelectedUser] = useState('');
   const [privateMessageList, setPrivateMessageList] = useState([]);
   const [messageList, setMessageList] = useState([]);
   const [message, setMessage] = useState('');
+  const [userList, setUserList] = useState('');
 
   const currentUser = useContext(CurrentUserContext);
 
@@ -25,7 +26,10 @@ const Content = ({ users, messagesDB }) => {
   }, [currentUser]);
 
   useEffect(() => {
-    socket.on('join', ({ message }) => setMessageList((_state) => [..._state, { systemMessage: message }]));
+    socket.on('join', ({ MESSAGE_SYSTEM, users }) => {
+      setUserList(users);
+      setMessageList((_state) => [..._state, { systemMessage: MESSAGE_SYSTEM }]);
+    });
 
     socket.on('messageList', ({ message, currentUser }) => {
       setMessageList((_state) => [..._state, { message, currentUser }]);
@@ -57,7 +61,7 @@ const Content = ({ users, messagesDB }) => {
     <div className='flex-auto flex flex-col overflow-hidden'>
       <div className='h-full flex gap-2'>
         <Sidebar
-          users={users}
+          users={userList}
           setSelectedUser={setSelectedUser}
         />
         <div className='w-full flex flex-col gap-2'>

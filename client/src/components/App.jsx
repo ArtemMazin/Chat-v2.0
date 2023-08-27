@@ -12,7 +12,6 @@ import PopupWithError from './PopupWithError';
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-  const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [messagesDB, setMessagesDB] = useState([]);
@@ -22,29 +21,22 @@ export default function App() {
   const [errorMessageRegistration, setErrorMessageRegistration] = useState('');
 
   const navigate = useNavigate();
-  console.count('count App');
+  // console.count('count App');
 
   //токен
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      getUsers()
-        .then((res) => {
-          if (res) {
-            // авторизуем пользователя
-            setLoggedIn(true);
-            navigate('/', { replace: true });
-          }
-        })
-        .catch(console.error);
+      setLoggedIn(true);
+      navigate('/', { replace: true });
     }
   }, []);
 
   useEffect(() => {
     if (loggedIn) {
-      Promise.all([getUsers(), getProfileData(), getMessages()])
-        .then(([usersArray, userInfo, messages]) => {
-          setUsers(usersArray.data);
+      Promise.all([getProfileData(), getMessages()])
+        .then(([userInfo, messages]) => {
+          // setUsers(usersArray.data);
           setCurrentUser(userInfo.data);
           setMessagesDB(messages.data);
         })
@@ -143,7 +135,6 @@ export default function App() {
               <ProtectedRouteElement
                 element={Main}
                 loggedIn={loggedIn}
-                users={users}
                 onLogout={onLogout}
                 messagesDB={messagesDB}
                 handleEditAvatarClick={handleEditAvatarClick}
@@ -156,7 +147,6 @@ export default function App() {
               <ProtectedRouteElement
                 element={Main}
                 loggedIn={loggedIn}
-                users={users}
                 onLogout={onLogout}
                 messagesDB={messagesDB}
                 handleEditAvatarClick={handleEditAvatarClick}
