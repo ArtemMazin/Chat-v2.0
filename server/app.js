@@ -72,8 +72,13 @@ io.on('connection', (socket) => {
     io.emit('messageList', { message, owner });
   });
 
-  socket.on('privateMessage', ({ message, selectedUserID }) => {
-    io.to(roomID).to(selectedUserID).emit('privateMessageList', { message, selectedUserID, roomID });
+  socket.on('privateMessage', ({ message, selectedUser, currentUser }) => {
+    io.to(roomID).to(selectedUser._id).emit('privateMessageList', {
+      message,
+      selectedUser,
+      roomID,
+      currentUser,
+    });
   });
 });
 

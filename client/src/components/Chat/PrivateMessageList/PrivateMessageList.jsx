@@ -13,7 +13,7 @@ const PrivateMessageList = ({ privateMessageList, selectedUser }) => {
     privateMessageList.length > 0 &&
       setFilteredMessages(
         privateMessageList.filter(
-          (mess) => (selectedUser === mess.selectedUserID || mess.roomID === selectedUser) && mess
+          (mess) => (selectedUser._id === mess.selectedUser._id || mess.roomID === selectedUser._id) && mess
         )
       );
   }, [privateMessageList, selectedUser, setFilteredMessages]);
@@ -32,8 +32,14 @@ const PrivateMessageList = ({ privateMessageList, selectedUser }) => {
               className='m-1 w-full flex justify-end'>
               <div className='flex w-full'>
                 <div className='px-2 py-1 w-full flex flex-col text-sm hover:bg-blue-50'>
+                  <h2 className='self-end font-medium'>{message.currentUser.name}</h2>
                   <p className='self-end'>{message.message}</p>
                 </div>
+                <img
+                  src={message.currentUser.avatar}
+                  alt={message.currentUser.name}
+                  className='w-12 h-12 mx-2 shrink-0 object-cover'
+                />
               </div>
             </li>
           ) : (
@@ -41,7 +47,13 @@ const PrivateMessageList = ({ privateMessageList, selectedUser }) => {
               key={i}
               className='m-1 w-full flex'>
               <div className='flex w-full'>
+                <img
+                  src={message.currentUser.avatar}
+                  alt={message.currentUser.name}
+                  className='w-12 h-12 mx-2 shrink-0 object-cover'
+                />
                 <div className='px-2 py-1 w-full flex flex-col text-sm text-sm hover:bg-blue-50'>
+                  <h2 className='font-medium'>{message.currentUser.name}</h2>
                   <p>{message.message}</p>
                 </div>
               </div>

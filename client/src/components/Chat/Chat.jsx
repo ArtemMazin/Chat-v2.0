@@ -7,7 +7,7 @@ const Chat = ({ messageList, messagesDB, privateMessageList, selectedUser }) => 
 
   return (
     <>
-      {location.pathname === `/users/${selectedUser}` ? (
+      {location.pathname === `/users/${selectedUser._id}` ? (
         <PrivateMessageList
           privateMessageList={privateMessageList}
           selectedUser={selectedUser}

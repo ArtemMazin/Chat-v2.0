@@ -8,7 +8,7 @@ export default function UserInfo({ user, setSelectedUser }) {
       <Button
         className='h-12 w-full p-0 flex items-center gap-2 font-light border-b border-b-blue-50 normal-case text-left'
         variant='text'
-        onClick={() => setSelectedUser(user._id)}>
+        onClick={() => setSelectedUser(user)}>
         <Avatar
           src={user.avatar}
           alt='avatar'

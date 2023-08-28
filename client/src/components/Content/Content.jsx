@@ -15,7 +15,7 @@ const Content = ({ messagesDB }) => {
     selectedUser,
   } = useMessageHandler();
 
-  console.count('count Content');
+  // console.count('count Content');
 
   return (
     <div className='flex-auto flex flex-col overflow-hidden'>

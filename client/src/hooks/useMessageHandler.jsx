@@ -25,8 +25,8 @@ export const useMessageHandler = () => {
       setMessageList((_state) => [..._state, { message, owner }]);
     });
 
-    socket.on('privateMessageList', ({ message, selectedUserID, roomID }) => {
-      setPrivateMessageList((prev) => [...prev, { selectedUserID, roomID, message }]);
+    socket.on('privateMessageList', ({ message, selectedUser, roomID, currentUser }) => {
+      setPrivateMessageList((prev) => [...prev, { selectedUser, roomID, message, currentUser }]);
     });
   }, [socket]);
 
@@ -40,7 +40,8 @@ export const useMessageHandler = () => {
     if (selectedUser) {
       socket.emit('privateMessage', {
         message,
-        selectedUserID: selectedUser,
+        selectedUser,
+        currentUser,
       });
     }
   }
