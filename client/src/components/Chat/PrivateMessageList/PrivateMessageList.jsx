@@ -31,9 +31,16 @@ const PrivateMessageList = ({ privateMessageList, selectedUser }) => {
               key={i}
               className='m-1 w-full flex justify-end'>
               <div className='flex w-full'>
-                <div className='px-2 py-1 w-full flex flex-col text-sm hover:bg-blue-50'>
-                  <h2 className='self-end font-medium'>{message.currentUser.name}</h2>
-                  <p className='self-end'>{message.message}</p>
+                <div className='group px-2 py-1 w-full flex justify-between items-center text-sm hover:bg-blue-50'>
+                  <button
+                    className='invisible group-hover:visible h-4 w-4'
+                    type='button'>
+                    X
+                  </button>
+                  <div className='flex flex-col '>
+                    <h2 className='self-end font-medium'>{message.currentUser.name}</h2>
+                    <p className='self-end'>{message.message}</p>
+                  </div>
                 </div>
                 <img
                   src={message.currentUser.avatar}
