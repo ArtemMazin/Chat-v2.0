@@ -9,10 +9,11 @@ import cookieParser from 'cookie-parser';
 import { errors } from 'celebrate';
 import router from './routes/index';
 import handleErrors from './errors/handleErrors';
-import DBmessage from './models/message';
+import { createMessageDB, getMessagesDB } from './controllers/messages';
 
 const { PORT = 5000 } = process.env;
 const users = [];
+let messages = [];
 
 const app = express();
 const server = http.createServer(app);
@@ -50,7 +51,10 @@ mongoose.connect('mongodb://127.0.0.1:27017/chatdb');
 io.on('connection', (socket) => {
   let roomID = '';
 
-  socket.on('join', (data) => {
+  socket.on('join', async (data) => {
+    const messagesDB = await getMessagesDB();
+    messages = messagesDB;
+
     if (data.user._id && data.user.name) {
       const userExists = users.some((user) => user._id === data.user._id);
       if (!userExists) {
@@ -60,16 +64,18 @@ io.on('connection', (socket) => {
 
       socket.join(roomID);
       const MESSAGE_SYSTEM = `${data.user.name} присоединился`;
+      messages.push({ MESSAGE_SYSTEM, users });
 
-      io.emit('join', { MESSAGE_SYSTEM, users });
+      io.emit('join', { messages, users });
     }
   });
 
   socket.on('sendMessage', ({ message, currentUser }) => {
-    const text = message;
     const owner = currentUser;
-    DBmessage.create({ text, owner });
-    io.emit('messageList', { message, owner });
+    messages.push({ message, owner });
+
+    createMessageDB(message, owner);
+    io.emit('messageList', { messages });
   });
 
   socket.on('privateMessage', ({ message, selectedUser, currentUser }) => {

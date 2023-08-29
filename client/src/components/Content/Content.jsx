@@ -4,7 +4,7 @@ import Sidebar from '../Sidebar/Sidebar';
 import TextArea from '../TextArea/TextArea';
 import { useMessageHandler } from '../../hooks/useMessageHandler';
 
-const Content = ({ messagesDB }) => {
+const Content = () => {
   const {
     privateMessageList,
     messageList,
@@ -13,6 +13,7 @@ const Content = ({ messagesDB }) => {
     handlePrivateMessage,
     setSelectedUser,
     selectedUser,
+    handleRemoveMessage,
   } = useMessageHandler();
 
   // console.count('count Content');
@@ -27,9 +28,9 @@ const Content = ({ messagesDB }) => {
         <div className='w-full flex flex-col gap-2'>
           <Chat
             messageList={messageList}
-            messagesDB={messagesDB}
             privateMessageList={privateMessageList}
             selectedUser={selectedUser}
+            handleRemoveMessage={handleRemoveMessage}
           />
           <TextArea
             handleMessage={handleMessage}

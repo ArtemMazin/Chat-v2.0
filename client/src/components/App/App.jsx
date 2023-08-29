@@ -4,7 +4,7 @@ import FormLogin from '../FormLogin/FormLogin';
 import FormRegister from '../FormRegister/FormRegister';
 import ProtectedRouteElement from '../ProtectedRouteElement/ProtectedRouteElement';
 import Main from '../Main/Main';
-import { changeProfileData, getProfileData, getMessages, login, logout, register } from '../../utils/api';
+import { changeProfileData, getProfileData, login, logout, register } from '../../utils/api';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import EditAvatarPopup from '../Popups/EditAvatarPopup';
 import PopupWithError from '../Popups/PopupWithError';
@@ -20,7 +20,6 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-  const [messagesDB, setMessagesDB] = useState([]);
   const [isInfoFailLoginPopupOpen, setIsInfoFailLoginPopupOpen] = useState(false);
   const [isInfoFailRegistrationPopupOpen, setIsInfoFailRegistrationPopupOpen] = useState(false);
   const [errorMessageLogin, setErrorMessageLogin] = useState('');
@@ -40,10 +39,9 @@ export default function App() {
 
   useEffect(() => {
     if (loggedIn) {
-      Promise.all([getProfileData(), getMessages()])
-        .then(([userInfo, messages]) => {
+      Promise.all([getProfileData()])
+        .then(([userInfo]) => {
           setCurrentUser(userInfo.data);
-          setMessagesDB(messages.data);
         })
         .catch(console.error);
     }
@@ -142,7 +140,6 @@ export default function App() {
                   element={Main}
                   loggedIn={loggedIn}
                   onLogout={onLogout}
-                  messagesDB={messagesDB}
                   handleEditAvatarClick={handleEditAvatarClick}
                 />
               }
@@ -154,7 +151,6 @@ export default function App() {
                   element={Main}
                   loggedIn={loggedIn}
                   onLogout={onLogout}
-                  messagesDB={messagesDB}
                   handleEditAvatarClick={handleEditAvatarClick}
                 />
               }

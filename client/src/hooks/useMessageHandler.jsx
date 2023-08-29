@@ -16,13 +16,13 @@ export const useMessageHandler = () => {
   }, [currentUser, socket]);
 
   useEffect(() => {
-    socket.on('join', ({ MESSAGE_SYSTEM, users }) => {
+    socket.on('join', ({ messages, users }) => {
       setUserList(users);
-      setMessageList((_state) => [..._state, { systemMessage: MESSAGE_SYSTEM }]);
+      setMessageList(messages);
     });
 
-    socket.on('messageList', ({ message, owner }) => {
-      setMessageList((_state) => [..._state, { message, owner }]);
+    socket.on('messageList', ({ messages }) => {
+      setMessageList(messages);
     });
 
     socket.on('privateMessageList', ({ message, selectedUser, roomID, currentUser }) => {
