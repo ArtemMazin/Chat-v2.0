@@ -78,6 +78,16 @@ io.on('connection', (socket) => {
     io.emit('messageList', { messages });
   });
 
+  socket.on('removeMessage', ({ message }) => {
+    messages = messages.filter((m) => {
+      if (m._id) {
+        return m._id.toString() !== message._id;
+      }
+    });
+
+    io.emit('updateMessageList', { messages });
+  });
+
   socket.on('privateMessage', ({ message, selectedUser, currentUser }) => {
     io.to(roomID).to(selectedUser._id).emit('privateMessageList', {
       message,

@@ -28,11 +28,19 @@ export const useMessageHandler = () => {
     socket.on('privateMessageList', ({ message, selectedUser, roomID, currentUser }) => {
       setPrivateMessageList((prev) => [...prev, { selectedUser, roomID, message, currentUser }]);
     });
+
+    socket.on('updateMessageList', ({ messages }) => {
+      setMessageList(messages);
+    });
   }, [socket]);
 
   function handleMessage(e, message) {
     e.preventDefault();
     socket.emit('sendMessage', { message, currentUser });
+  }
+  function handleRemoveMessage(e, message) {
+    e.preventDefault();
+    socket.emit('removeMessage', { message });
   }
 
   function handlePrivateMessage(e, message) {
@@ -54,5 +62,6 @@ export const useMessageHandler = () => {
     handlePrivateMessage,
     setSelectedUser,
     selectedUser,
+    handleRemoveMessage,
   };
 };

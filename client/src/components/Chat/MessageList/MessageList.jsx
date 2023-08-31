@@ -18,7 +18,6 @@ const MessageList = ({ messageList, handleRemoveMessage }) => {
     <Card className='flex flex-auto overflow-y-scroll rounded'>
       <ul className='px-10 flex flex-col list-none'>
         {messageList.map((message, i) => {
-          console.log(message);
           return message.MESSAGE_SYSTEM ? (
             <p
               key={i}
@@ -34,8 +33,7 @@ const MessageList = ({ messageList, handleRemoveMessage }) => {
                   <button
                     className='invisible group-hover:visible h-4 w-4'
                     type='button'
-                    // onClick={(e) => handleRemoveMessage(e, message)}
-                  >
+                    onClick={(e) => handleRemoveMessage(e, message)}>
                     X
                   </button>
                   <div className='flex flex-col '>
