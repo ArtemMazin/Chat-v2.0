@@ -13,7 +13,8 @@ import { createMessageDB, getMessagesDB } from './controllers/messages';
 
 const { PORT = 5000 } = process.env;
 const users = [];
-let messages = [];
+const messages = {};
+const roomID = 'default';
 
 const app = express();
 const server = http.createServer(app);
@@ -49,43 +50,41 @@ app.use(express.urlencoded({ extended: true }));
 mongoose.connect('mongodb://127.0.0.1:27017/chatdb');
 
 io.on('connection', (socket) => {
-  let roomID = '';
-
   socket.on('join', async (data) => {
     const messagesDB = await getMessagesDB();
-    messages = messagesDB;
+    messages[roomID] = messagesDB;
 
     if (data.user._id && data.user.name) {
       const userExists = users.some((user) => user._id === data.user._id);
       if (!userExists) {
         users.push(data.user);
       }
-      roomID = data.user._id;
 
-      socket.join(roomID);
+      // socket.join(roomID);
       const MESSAGE_SYSTEM = `${data.user.name} присоединился`;
-      messages.push({ MESSAGE_SYSTEM, users });
 
-      io.emit('join', { messages, users });
+      messages[roomID].push({ MESSAGE_SYSTEM, users });
+
+      io.emit('join', messages[roomID], users);
     }
   });
 
   socket.on('sendMessage', ({ message, currentUser }) => {
     const owner = currentUser;
-    messages.push({ message, owner });
+    messages[roomID].push({ message, owner });
 
     createMessageDB(message, owner);
-    io.emit('messageList', { messages });
+    io.emit('messageList', messages[roomID]);
   });
 
   socket.on('removeMessage', ({ message }) => {
-    messages = messages.filter((m) => {
+    messages[roomID] = messages[roomID].filter((m) => {
       if (m._id) {
         return m._id.toString() !== message._id;
       }
     });
 
-    io.emit('updateMessageList', { messages });
+    io.emit('updateMessageList', messages[roomID]);
   });
 
   socket.on('privateMessage', ({ message, selectedUser, currentUser }) => {

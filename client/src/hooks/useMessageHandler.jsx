@@ -16,12 +16,12 @@ export const useMessageHandler = () => {
   }, [currentUser, socket]);
 
   useEffect(() => {
-    socket.on('join', ({ messages, users }) => {
+    socket.on('join', (messages, users) => {
       setUserList(users);
       setMessageList(messages);
     });
 
-    socket.on('messageList', ({ messages }) => {
+    socket.on('messageList', (messages) => {
       setMessageList(messages);
     });
 
@@ -29,7 +29,7 @@ export const useMessageHandler = () => {
       setPrivateMessageList((prev) => [...prev, { selectedUser, roomID, message, currentUser }]);
     });
 
-    socket.on('updateMessageList', ({ messages }) => {
+    socket.on('updateMessageList', (messages) => {
       setMessageList(messages);
     });
   }, [socket]);
