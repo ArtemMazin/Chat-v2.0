@@ -9,17 +9,21 @@ const PrivateMessageList = ({ privateMessageList, selectedUser }) => {
 
   useEffect(() => scrollToBottomPrivate(), [filteredMessages]);
 
-  console.log(privateMessageList, privateMessageList[selectedUser._id]);
+  console.log(selectedUser._id, currentUser._id, privateMessageList[selectedUser._id]);
 
   useEffect(() => {
     privateMessageList[selectedUser._id] &&
       privateMessageList[selectedUser._id].length > 0 &&
       setFilteredMessages(
         privateMessageList[selectedUser._id].filter(
-          (mess) => (selectedUser._id === mess.selectedUser._id || mess.currentUser._id === selectedUser._id) && mess
+          (mess) =>
+            ((selectedUser._id === mess.selectedUser._id && currentUser._id === mess.selectedUser._id) ||
+              (currentUser._id === mess.selectedUser._id && selectedUser._id !== mess.selectedUser._id) ||
+              (selectedUser._id === mess.selectedUser._id && currentUser._id === mess.currentUser._id)) &&
+            mess
         )
       );
-  }, [privateMessageList, selectedUser, setFilteredMessages]);
+  }, [currentUser._id, privateMessageList, selectedUser, setFilteredMessages]);
 
   const scrollToBottomPrivate = () => {
     privateMessageRef.current?.scrollIntoView({ behavior: 'smooth' });
