@@ -50,18 +50,23 @@ app.use(express.urlencoded({ extended: true }));
 mongoose.connect('mongodb://127.0.0.1:27017/chatdb');
 
 io.on('connection', (socket) => {
+  const { userName, userID } = socket.handshake.auth;
+  socket.userID = userID;
+  socket.userName = userName;
+
   socket.on('join', async (data) => {
+    console.log(`${socket.userName} присоединился`);
+    socket.join(socket.userID);
     const messagesDB = await getMessagesDB();
     messages[roomID] = messagesDB;
-    messages[data.user._id] = [];
+    messages[socket.userID] = [];
 
     if (data.user._id && data.user.name) {
-      const userExists = users.some((user) => user._id === data.user._id);
+      const userExists = users.some((user) => user._id === socket.userID);
       if (!userExists) {
         users.push(data.user);
       }
 
-      socket.join(data.user._id);
       const MESSAGE_SYSTEM = `${data.user.name} присоединился`;
 
       messages[roomID].push({ MESSAGE_SYSTEM, users });
@@ -89,20 +94,22 @@ io.on('connection', (socket) => {
   });
 
   socket.on('privateMessage', ({ message, selectedUser, currentUser }) => {
-    socket.join(selectedUser._id);
-
     messages[selectedUser._id].push({
       message,
       selectedUser,
       currentUser,
     });
-    messages[currentUser._id].push({
+    messages[socket.userID].push({
       message,
       selectedUser,
       currentUser,
     });
 
-    io.to(selectedUser._id).emit('privateMessageList', messages);
+    io.to(socket.userID).to(selectedUser._id).emit('privateMessageList', messages);
+  });
+
+  socket.on('disconnect', () => {
+    console.log(`${socket.userName} покинул чат`);
   });
 });
 

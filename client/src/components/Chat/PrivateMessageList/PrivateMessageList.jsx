@@ -9,16 +9,13 @@ const PrivateMessageList = ({ privateMessageList, selectedUser }) => {
 
   useEffect(() => scrollToBottomPrivate(), [filteredMessages]);
 
-  console.log(selectedUser._id, currentUser._id, privateMessageList[selectedUser._id]);
-
   useEffect(() => {
     privateMessageList[selectedUser._id] &&
       privateMessageList[selectedUser._id].length > 0 &&
       setFilteredMessages(
         privateMessageList[selectedUser._id].filter(
           (mess) =>
-            ((selectedUser._id === mess.selectedUser._id && currentUser._id === mess.selectedUser._id) ||
-              (currentUser._id === mess.selectedUser._id && selectedUser._id !== mess.selectedUser._id) ||
+            ((currentUser._id === mess.selectedUser._id && selectedUser._id !== mess.selectedUser._id) ||
               (selectedUser._id === mess.selectedUser._id && currentUser._id === mess.currentUser._id)) &&
             mess
         )

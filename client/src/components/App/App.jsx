@@ -13,6 +13,11 @@ import { io } from 'socket.io-client';
 
 const socket = io('http://localhost:5000', {
   credentials: 'include',
+  withCredentials: true,
+  auth: {
+    userID: localStorage.getItem('userID') || '',
+    userName: localStorage.getItem('name') || '',
+  },
 });
 
 export default function App() {
@@ -36,6 +41,11 @@ export default function App() {
       navigate('/', { replace: true });
     }
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem('name', currentUser.name);
+    localStorage.setItem('userID', currentUser._id);
+  }, [currentUser]);
 
   useEffect(() => {
     if (loggedIn) {
