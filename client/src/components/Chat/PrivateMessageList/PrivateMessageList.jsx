@@ -9,11 +9,14 @@ const PrivateMessageList = ({ privateMessageList, selectedUser }) => {
 
   useEffect(() => scrollToBottomPrivate(), [filteredMessages]);
 
+  console.log(privateMessageList, privateMessageList[selectedUser._id]);
+
   useEffect(() => {
-    privateMessageList.length > 0 &&
+    privateMessageList[selectedUser._id] &&
+      privateMessageList[selectedUser._id].length > 0 &&
       setFilteredMessages(
-        privateMessageList.filter(
-          (mess) => (selectedUser._id === mess.selectedUser._id || mess.roomID === selectedUser._id) && mess
+        privateMessageList[selectedUser._id].filter(
+          (mess) => (selectedUser._id === mess.selectedUser._id || mess.currentUser._id === selectedUser._id) && mess
         )
       );
   }, [privateMessageList, selectedUser, setFilteredMessages]);
@@ -26,7 +29,7 @@ const PrivateMessageList = ({ privateMessageList, selectedUser }) => {
     <Card className='flex flex-auto overflow-y-scroll rounded'>
       <ul className='px-10 flex flex-col list-none'>
         {filteredMessages.map((message, i) =>
-          message.roomID === currentUser._id ? (
+          message.currentUser._id === currentUser._id ? (
             <li
               key={i}
               className='m-1 w-full flex justify-end'>

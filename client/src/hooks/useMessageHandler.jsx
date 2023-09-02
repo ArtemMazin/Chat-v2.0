@@ -4,7 +4,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 export const useMessageHandler = () => {
   const [selectedUser, setSelectedUser] = useState('');
-  const [privateMessageList, setPrivateMessageList] = useState([]);
+  const [privateMessageList, setPrivateMessageList] = useState({});
   const [messageList, setMessageList] = useState([]);
   const [userList, setUserList] = useState('');
 
@@ -25,8 +25,8 @@ export const useMessageHandler = () => {
       setMessageList(messages);
     });
 
-    socket.on('privateMessageList', ({ message, selectedUser, roomID, currentUser }) => {
-      setPrivateMessageList((prev) => [...prev, { selectedUser, roomID, message, currentUser }]);
+    socket.on('privateMessageList', (messages) => {
+      setPrivateMessageList(messages);
     });
 
     socket.on('updateMessageList', (messages) => {

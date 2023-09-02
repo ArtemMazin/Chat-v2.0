@@ -53,6 +53,7 @@ io.on('connection', (socket) => {
   socket.on('join', async (data) => {
     const messagesDB = await getMessagesDB();
     messages[roomID] = messagesDB;
+    messages[data.user._id] = [];
 
     if (data.user._id && data.user.name) {
       const userExists = users.some((user) => user._id === data.user._id);
@@ -60,7 +61,7 @@ io.on('connection', (socket) => {
         users.push(data.user);
       }
 
-      // socket.join(roomID);
+      socket.join(data.user._id);
       const MESSAGE_SYSTEM = `${data.user.name} присоединился`;
 
       messages[roomID].push({ MESSAGE_SYSTEM, users });
@@ -88,12 +89,20 @@ io.on('connection', (socket) => {
   });
 
   socket.on('privateMessage', ({ message, selectedUser, currentUser }) => {
-    io.to(roomID).to(selectedUser._id).emit('privateMessageList', {
+    socket.join(selectedUser._id);
+
+    messages[selectedUser._id].push({
       message,
       selectedUser,
-      roomID,
       currentUser,
     });
+    messages[currentUser._id].push({
+      message,
+      selectedUser,
+      currentUser,
+    });
+
+    io.to(selectedUser._id).emit('privateMessageList', messages);
   });
 });
 
