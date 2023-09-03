@@ -16,9 +16,10 @@ export const useMessageHandler = () => {
   }, [currentUser, socket]);
 
   useEffect(() => {
-    socket.on('join', (messages, users) => {
+    socket.on('join', (messages, privateMessagesDB, users) => {
       setUserList(users);
       setMessageList(messages);
+      setPrivateMessageList(privateMessagesDB);
     });
 
     socket.on('messageList', (messages) => {
@@ -26,6 +27,7 @@ export const useMessageHandler = () => {
     });
 
     socket.on('privateMessageList', (messages) => {
+      console.log(messages);
       setPrivateMessageList(messages);
     });
 
@@ -48,7 +50,7 @@ export const useMessageHandler = () => {
     if (selectedUser) {
       socket.emit('privateMessage', {
         message,
-        selectedUser,
+        to: selectedUser._id,
         currentUser,
       });
     }

@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser';
 import { errors } from 'celebrate';
 import router from './routes/index';
 import handleErrors from './errors/handleErrors';
-import { createMessageDB, getMessagesDB } from './controllers/messages';
+import { createMessageDB, getMessagesDB, getPrivatMessagesDB } from './controllers/messages';
 
 const { PORT = 5000 } = process.env;
 const users = [];
@@ -57,9 +57,11 @@ io.on('connection', (socket) => {
   socket.on('join', async (data) => {
     console.log(`${socket.userName} присоединился`);
     socket.join(socket.userID);
+
     const messagesDB = await getMessagesDB();
+    const privateMessagesDB = await getPrivatMessagesDB();
+    messages[socket.userID] = privateMessagesDB;
     messages[roomID] = messagesDB;
-    messages[socket.userID] = [];
 
     if (data.user._id && data.user.name) {
       const userExists = users.some((user) => user._id === socket.userID);
@@ -71,15 +73,16 @@ io.on('connection', (socket) => {
 
       messages[roomID].push({ MESSAGE_SYSTEM, users });
 
-      io.emit('join', messages[roomID], users);
+      io.emit('join', messages[roomID], messages, users);
     }
   });
 
   socket.on('sendMessage', ({ message, currentUser }) => {
+    const isPrivat = false;
     const owner = currentUser;
     messages[roomID].push({ message, owner });
 
-    createMessageDB(message, owner);
+    createMessageDB(message, owner, isPrivat);
     io.emit('messageList', messages[roomID]);
   });
 
@@ -93,19 +96,23 @@ io.on('connection', (socket) => {
     io.emit('updateMessageList', messages[roomID]);
   });
 
-  socket.on('privateMessage', ({ message, selectedUser, currentUser }) => {
-    messages[selectedUser._id].push({
+  socket.on('privateMessage', async ({ message, to, currentUser }) => {
+    const isPrivat = true;
+    const owner = currentUser;
+
+    messages[to].push({
       message,
-      selectedUser,
-      currentUser,
+      to,
+      owner,
     });
     messages[socket.userID].push({
       message,
-      selectedUser,
-      currentUser,
+      to,
+      owner,
     });
 
-    io.to(socket.userID).to(selectedUser._id).emit('privateMessageList', messages);
+    createMessageDB(message, owner, to, isPrivat);
+    io.to(socket.userID).to(to).emit('privateMessageList', messages);
   });
 
   socket.on('disconnect', () => {

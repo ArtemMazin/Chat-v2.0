@@ -12,6 +12,15 @@ const messageSchema = new mongoose.Schema({
     required: true,
   },
 
+  to: {
+    type: String,
+  },
+
+  isPrivat: {
+    type: Boolean,
+    required: true,
+  },
+
   createdAt: {
     type: Date,
     default: Date.now,
