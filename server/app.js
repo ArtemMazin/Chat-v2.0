@@ -111,7 +111,7 @@ io.on('connection', (socket) => {
       owner,
     });
 
-    createMessageDB(message, owner, to, isPrivat);
+    createMessageDB(message, owner, isPrivat, to);
     io.to(socket.userID).to(to).emit('privateMessageList', messages);
   });
 
