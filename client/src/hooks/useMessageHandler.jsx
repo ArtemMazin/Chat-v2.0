@@ -27,7 +27,6 @@ export const useMessageHandler = () => {
     });
 
     socket.on('privateMessageList', (messages) => {
-      console.log(messages);
       setPrivateMessageList(messages);
     });
 

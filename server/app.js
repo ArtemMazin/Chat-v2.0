@@ -80,22 +80,20 @@ io.on('connection', (socket) => {
   });
 
   socket.on('sendMessage', ({ message, currentUser }) => {
+    const createdAt = Date.now();
     const isPrivat = false;
     const owner = currentUser;
-    messages[roomID].push({ message, owner });
+    messages[roomID].push({ message, owner, createdAt });
 
-    createMessageDB(message, owner, isPrivat);
+    createMessageDB(message, owner, isPrivat, createdAt);
+
     io.emit('messageList', messages[roomID]);
   });
 
-  socket.on('removeMessage', ({ message }) => {
-    messages[roomID] = messages[roomID].filter((m) => {
-      if (m._id) {
-        return m._id.toString() !== message._id;
-      }
-    });
+  socket.on('removeMessage', async ({ message }) => {
+    messages[roomID] = messages[roomID].filter((m) => m.createdAt !== message.createdAt);
 
-    deleteMessage(message._id);
+    deleteMessage(message.createdAt);
 
     io.emit('updateMessageList', messages[roomID]);
   });
@@ -103,19 +101,22 @@ io.on('connection', (socket) => {
   socket.on('privateMessage', ({ message, to, currentUser }) => {
     const isPrivat = true;
     const owner = currentUser;
+    const createdAt = Date.now();
 
     messages[to].push({
       message,
       to,
       owner,
+      createdAt,
     });
     messages[socket.userID].push({
       message,
       to,
       owner,
+      createdAt,
     });
 
-    createMessageDB(message, owner, isPrivat, to);
+    createMessageDB(message, owner, isPrivat, createdAt, to);
     io.to(socket.userID).to(to).emit('privateMessageList', messages);
   });
 
