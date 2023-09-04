@@ -9,7 +9,7 @@ import cookieParser from 'cookie-parser';
 import { errors } from 'celebrate';
 import router from './routes/index';
 import handleErrors from './errors/handleErrors';
-import { createMessageDB, getMessagesDB, getPrivatMessagesDB } from './controllers/messages';
+import { createMessageDB, deleteMessage, getMessagesDB, getPrivatMessagesDB } from './controllers/messages';
 
 const { PORT = 5000 } = process.env;
 const users = [];
@@ -53,6 +53,8 @@ io.on('connection', (socket) => {
   const { userName, userID } = socket.handshake.auth;
   socket.userID = userID;
   socket.userName = userName;
+  messages[roomID] = [];
+  messages[socket.userID] = [];
 
   socket.on('join', async (data) => {
     console.log(`${socket.userName} присоединился`);
@@ -93,10 +95,12 @@ io.on('connection', (socket) => {
       }
     });
 
+    deleteMessage(message._id);
+
     io.emit('updateMessageList', messages[roomID]);
   });
 
-  socket.on('privateMessage', async ({ message, to, currentUser }) => {
+  socket.on('privateMessage', ({ message, to, currentUser }) => {
     const isPrivat = true;
     const owner = currentUser;
 
