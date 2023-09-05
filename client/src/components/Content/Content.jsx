@@ -14,6 +14,7 @@ const Content = () => {
     setSelectedUser,
     selectedUser,
     handleRemoveMessage,
+    handleRemovePrivateMessage,
   } = useMessageHandler();
 
   // console.count('count Content');
@@ -31,6 +32,7 @@ const Content = () => {
             privateMessageList={privateMessageList}
             selectedUser={selectedUser}
             handleRemoveMessage={handleRemoveMessage}
+            handleRemovePrivateMessage={handleRemovePrivateMessage}
           />
           <TextArea
             handleMessage={handleMessage}

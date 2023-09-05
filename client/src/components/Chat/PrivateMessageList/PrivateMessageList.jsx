@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Card } from '@material-tailwind/react';
 import { CurrentUserContext } from '../../../contexts/CurrentUserContext';
 
-const PrivateMessageList = ({ privateMessageList, selectedUser }) => {
+const PrivateMessageList = ({ privateMessageList, selectedUser, handleRemovePrivateMessage }) => {
   const [filteredMessages, setFilteredMessages] = useState([]);
   const currentUser = useContext(CurrentUserContext);
   const privateMessageRef = useRef(null);
@@ -10,16 +10,16 @@ const PrivateMessageList = ({ privateMessageList, selectedUser }) => {
   useEffect(() => scrollToBottomPrivate(), [filteredMessages]);
 
   useEffect(() => {
-    privateMessageList[selectedUser._id] &&
-      privateMessageList[selectedUser._id].length > 0 &&
-      setFilteredMessages(
-        privateMessageList[selectedUser._id].filter(
-          (mess) =>
-            ((currentUser._id === mess.to && selectedUser._id !== mess.to && selectedUser._id === mess.owner._id) ||
-              (selectedUser._id === mess.to && currentUser._id === mess.owner._id)) &&
-            mess
+    privateMessageList[selectedUser._id] && privateMessageList[selectedUser._id].length > 0
+      ? setFilteredMessages(
+          privateMessageList[selectedUser._id].filter(
+            (mess) =>
+              ((currentUser._id === mess.to && selectedUser._id !== mess.to && selectedUser._id === mess.owner._id) ||
+                (selectedUser._id === mess.to && currentUser._id === mess.owner._id)) &&
+              mess
+          )
         )
-      );
+      : setFilteredMessages(privateMessageList[selectedUser._id]);
   }, [currentUser._id, privateMessageList, selectedUser, setFilteredMessages]);
 
   const scrollToBottomPrivate = () => {
@@ -38,7 +38,8 @@ const PrivateMessageList = ({ privateMessageList, selectedUser }) => {
                 <div className='group px-2 py-1 w-full flex justify-between items-center text-sm hover:bg-blue-50'>
                   <button
                     className='invisible group-hover:visible h-4 w-4'
-                    type='button'>
+                    type='button'
+                    onClick={(e) => handleRemovePrivateMessage(e, message)}>
                     X
                   </button>
                   <div className='flex flex-col '>

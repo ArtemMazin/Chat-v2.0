@@ -87,7 +87,7 @@ io.on('connection', (socket) => {
 
     createMessageDB(message, owner, isPrivat, createdAt);
 
-    io.emit('messageList', messages[roomID]);
+    io.emit('updateMessageList', messages[roomID]);
   });
 
   socket.on('removeMessage', async ({ message }) => {
@@ -96,6 +96,14 @@ io.on('connection', (socket) => {
     deleteMessage(message.createdAt);
 
     io.emit('updateMessageList', messages[roomID]);
+  });
+  socket.on('removePrivateMessage', async ({ message }) => {
+    messages[socket.userID] = messages[socket.userID].filter((m) => m.createdAt !== message.createdAt);
+    messages[message.to] = messages[message.to].filter((m) => m.createdAt !== message.createdAt);
+
+    deleteMessage(message.createdAt);
+
+    io.emit('updatePrivateMessageList', messages);
   });
 
   socket.on('privateMessage', ({ message, to, currentUser }) => {
@@ -117,7 +125,7 @@ io.on('connection', (socket) => {
     });
 
     createMessageDB(message, owner, isPrivat, createdAt, to);
-    io.to(socket.userID).to(to).emit('privateMessageList', messages);
+    io.to(socket.userID).to(to).emit('updatePrivateMessageList', messages);
   });
 
   socket.on('disconnect', () => {

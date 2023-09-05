@@ -2,7 +2,7 @@ import { useLocation } from 'react-router-dom';
 import PrivateMessageList from './PrivateMessageList/PrivateMessageList';
 import MessageList from './MessageList/MessageList';
 
-const Chat = ({ messageList, privateMessageList, selectedUser, handleRemoveMessage }) => {
+const Chat = ({ messageList, privateMessageList, selectedUser, handleRemoveMessage, handleRemovePrivateMessage }) => {
   const location = useLocation();
 
   return (
@@ -11,6 +11,7 @@ const Chat = ({ messageList, privateMessageList, selectedUser, handleRemoveMessa
         <PrivateMessageList
           privateMessageList={privateMessageList}
           selectedUser={selectedUser}
+          handleRemovePrivateMessage={handleRemovePrivateMessage}
         />
       ) : (
         <MessageList

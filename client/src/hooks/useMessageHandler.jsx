@@ -22,11 +22,7 @@ export const useMessageHandler = () => {
       setPrivateMessageList(privateMessagesDB);
     });
 
-    socket.on('messageList', (messages) => {
-      setMessageList(messages);
-    });
-
-    socket.on('privateMessageList', (messages) => {
+    socket.on('updatePrivateMessageList', (messages) => {
       setPrivateMessageList(messages);
     });
 
@@ -42,6 +38,10 @@ export const useMessageHandler = () => {
   function handleRemoveMessage(e, message) {
     e.preventDefault();
     socket.emit('removeMessage', { message });
+  }
+  function handleRemovePrivateMessage(e, message) {
+    e.preventDefault();
+    socket.emit('removePrivateMessage', { message });
   }
 
   function handlePrivateMessage(e, message) {
@@ -64,5 +64,6 @@ export const useMessageHandler = () => {
     setSelectedUser,
     selectedUser,
     handleRemoveMessage,
+    handleRemovePrivateMessage,
   };
 };
