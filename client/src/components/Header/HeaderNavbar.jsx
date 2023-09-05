@@ -2,14 +2,17 @@ import { Button, Navbar, Avatar } from '@material-tailwind/react';
 import { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { useMessageHandler } from '../../hooks/useMessageHandler';
 
 export default function HeaderNavbar({ onLogout, handleEditAvatarClick }) {
   const navigate = useNavigate();
   const currentUser = useContext(CurrentUserContext);
+  const { handleLogout } = useMessageHandler();
 
   function signOut() {
     localStorage.removeItem('token');
     onLogout();
+    handleLogout();
     navigate('/sign-in', { replace: 'true' });
   }
   return (

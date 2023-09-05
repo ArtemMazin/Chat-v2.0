@@ -13,7 +13,7 @@ import dateOptions from './utils/constants';
 import { createMessageDB, deleteMessage, getMessagesDB, getPrivatMessagesDB } from './controllers/messages';
 
 const { PORT = 5000 } = process.env;
-const users = [];
+let users = [];
 const messages = {};
 const roomID = 'default';
 
@@ -133,8 +133,15 @@ io.on('connection', (socket) => {
     io.to(socket.userID).to(to).emit('updatePrivateMessageList', messages);
   });
 
+  socket.on('logout', (currentUser) => {
+    users = users.filter((user) => user._id !== currentUser._id);
+    io.emit('updateUserList', users);
+  });
+
   socket.on('disconnect', () => {
     console.log(`${socket.userName} покинул чат`);
+    users = users.filter((user) => user._id !== socket.userID);
+    io.emit('updateUserList', users);
   });
 });
 

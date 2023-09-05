@@ -29,6 +29,10 @@ export const useMessageHandler = () => {
     socket.on('updateMessageList', (messages) => {
       setMessageList(messages);
     });
+
+    socket.on('updateUserList', (users) => {
+      setUserList(users);
+    });
   }, [socket]);
 
   function handleMessage(e, message) {
@@ -55,6 +59,10 @@ export const useMessageHandler = () => {
     }
   }
 
+  function handleLogout() {
+    socket.emit('logout', currentUser);
+  }
+
   return {
     privateMessageList,
     messageList,
@@ -65,5 +73,6 @@ export const useMessageHandler = () => {
     selectedUser,
     handleRemoveMessage,
     handleRemovePrivateMessage,
+    handleLogout,
   };
 };
