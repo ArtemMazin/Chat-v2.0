@@ -36,8 +36,11 @@ const MessageList = ({ messageList, handleRemoveMessage }) => {
                     onClick={(e) => handleRemoveMessage(e, message)}>
                     X
                   </button>
-                  <div className='flex flex-col '>
-                    <h2 className='self-end font-medium'>{message.owner.name}</h2>
+                  <div className='flex flex-col'>
+                    <div className='self-end flex gap-2 items-center'>
+                      <p className='text-xs'>{message.time}</p>
+                      <h2 className='font-medium'>{message.owner.name}</h2>
+                    </div>
                     <p className='self-end'>{message.message}</p>
                   </div>
                 </div>
@@ -63,7 +66,10 @@ const MessageList = ({ messageList, handleRemoveMessage }) => {
                     className='w-12 h-12 mx-2 shrink-0 object-cover'
                   />
                   <div className='px-2 py-1 w-full flex flex-col text-sm hover:bg-blue-50'>
-                    <h2 className='font-medium'>{message.owner.name}</h2>
+                    <div className='flex gap-2 items-center'>
+                      <h2 className='font-medium'>{message.owner.name}</h2>
+                      <p className='text-xs'>{message.time}</p>
+                    </div>
                     <p>{message.message}</p>
                   </div>
                 </div>

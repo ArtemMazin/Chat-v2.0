@@ -23,6 +23,12 @@ const messageSchema = new mongoose.Schema({
 
   createdAt: {
     type: Number,
+    required: true,
+  },
+
+  time: {
+    type: String,
+    required: true,
   },
 });
 

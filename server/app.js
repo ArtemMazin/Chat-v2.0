@@ -9,6 +9,7 @@ import cookieParser from 'cookie-parser';
 import { errors } from 'celebrate';
 import router from './routes/index';
 import handleErrors from './errors/handleErrors';
+import dateOptions from './utils/constants';
 import { createMessageDB, deleteMessage, getMessagesDB, getPrivatMessagesDB } from './controllers/messages';
 
 const { PORT = 5000 } = process.env;
@@ -81,11 +82,13 @@ io.on('connection', (socket) => {
 
   socket.on('sendMessage', ({ message, currentUser }) => {
     const createdAt = Date.now();
+    const time = new Date(createdAt).toLocaleDateString('ru-RU', dateOptions);
+
     const isPrivat = false;
     const owner = currentUser;
-    messages[roomID].push({ message, owner, createdAt });
+    messages[roomID].push({ message, owner, createdAt, time });
 
-    createMessageDB(message, owner, isPrivat, createdAt);
+    createMessageDB(message, owner, isPrivat, createdAt, time);
 
     io.emit('updateMessageList', messages[roomID]);
   });
@@ -93,38 +96,40 @@ io.on('connection', (socket) => {
   socket.on('removeMessage', async ({ message }) => {
     messages[roomID] = messages[roomID].filter((m) => m.createdAt !== message.createdAt);
 
-    deleteMessage(message.createdAt);
-
     io.emit('updateMessageList', messages[roomID]);
+    deleteMessage(message.createdAt);
   });
   socket.on('removePrivateMessage', async ({ message }) => {
     messages[socket.userID] = messages[socket.userID].filter((m) => m.createdAt !== message.createdAt);
     messages[message.to] = messages[message.to].filter((m) => m.createdAt !== message.createdAt);
 
-    deleteMessage(message.createdAt);
-
     io.emit('updatePrivateMessageList', messages);
+    deleteMessage(message.createdAt);
   });
 
   socket.on('privateMessage', ({ message, to, currentUser }) => {
     const isPrivat = true;
     const owner = currentUser;
+
     const createdAt = Date.now();
+    const time = new Date(createdAt).toLocaleDateString('ru-RU', dateOptions);
 
     messages[to].push({
       message,
       to,
       owner,
       createdAt,
+      time,
     });
     messages[socket.userID].push({
       message,
       to,
       owner,
       createdAt,
+      time,
     });
 
-    createMessageDB(message, owner, isPrivat, createdAt, to);
+    createMessageDB(message, owner, isPrivat, createdAt, time, to);
     io.to(socket.userID).to(to).emit('updatePrivateMessageList', messages);
   });
 

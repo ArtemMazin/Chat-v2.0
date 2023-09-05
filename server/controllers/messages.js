@@ -4,16 +4,18 @@ const getMessagesDB = () => DBmessage.find({ isPrivat: false }).populate('owner'
 
 const getPrivatMessagesDB = () => DBmessage.find({ isPrivat: true }).populate('owner');
 
-const createMessageDB = (message, owner, isPrivat, createdAt, to) =>
+const createMessageDB = (message, owner, isPrivat, createdAt, time, to) =>
   DBmessage.create({
     message,
     owner,
     isPrivat,
     createdAt,
+    time,
     to,
   });
 
-const deleteMessage = async (date) =>
-  await DBmessage.findOne({ createdAt: date }).then((mess) => DBmessage.deleteOne(mess));
-
+const deleteMessage = async (date) => {
+  const mess = await DBmessage.findOne({ createdAt: date });
+  return DBmessage.deleteOne(mess);
+};
 export { getMessagesDB, getPrivatMessagesDB, createMessageDB, deleteMessage };
