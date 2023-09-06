@@ -15,7 +15,7 @@ export default function Sidebar({ users, setSelectedUser }) {
   // console.count('count Sidebar');
 
   return (
-    <Card className='w-80 h-full overflow-y-scroll rounded'>
+    <Card className='w-80 h-full overflow-y-scroll rounded mobile:hidden'>
       <div className='py-2 text-blue-400 text-center border-b border-b-blue-50'>Список пользователей</div>
       <List className='p-0 gap-0 list-none'>
         {users.length > 0 &&

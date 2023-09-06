@@ -25,7 +25,7 @@ export default function EditAvatarPopup({ isOpen, isEditAvatarPopupOpen, handleU
   return (
     <React.Fragment>
       <Dialog
-        className='rounded-none'
+        className='rounded-none mobile:max-w-xs w-full'
         open={isEditAvatarPopupOpen}
         handler={isOpen}>
         <img

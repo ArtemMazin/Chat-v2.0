@@ -8,6 +8,13 @@ module.exports = withMT({
     container: {
       center: true,
     },
+    screens: {
+      mobile: { max: '480px' },
+    },
+    backgroundImage: {
+      'delete-img': "url('/src/images/delete-btn.svg')",
+      'correct-img': "url('/src/images/pencil-btn.svg')",
+    },
   },
   plugins: [],
 });
