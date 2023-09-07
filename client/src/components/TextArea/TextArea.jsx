@@ -3,14 +3,21 @@ import EmojiPicker from 'emoji-picker-react';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-export default function TextArea({ handleMessage, handlePrivateMessage, inputRef }) {
+export default function TextArea({
+  handleMessage,
+  handlePrivateMessage,
+  inputRef,
+  isEdit,
+  setIsEdit,
+  message,
+  setMessage,
+}) {
   const [selectedEmoji, setSelectedEmoji] = useState('');
   const [emojiIsOpen, setEmojiIsOpen] = useState(false);
-  const [message, setMessage] = useState('');
 
   const location = useLocation();
 
-  useEffect(() => setMessage((prev) => `${prev || ''} ${selectedEmoji.emoji || ''}`), [selectedEmoji, setMessage]);
+  useEffect(() => setMessage((prev) => `${prev || ''}${selectedEmoji.emoji || ''}`), [selectedEmoji, setMessage]);
 
   function handleEmojiSelect(emoji) {
     setSelectedEmoji(emoji);
@@ -20,8 +27,21 @@ export default function TextArea({ handleMessage, handlePrivateMessage, inputRef
     setEmojiIsOpen(!emojiIsOpen);
   }
   function handleSubmit(e) {
-    location.pathname === '/' ? handleMessage(e, message) : handlePrivateMessage(e, message);
+    e.preventDefault();
+    if (isEdit) {
+      console.log(isEdit);
+      location.pathname === '/' ? handleMessage(e, message) : handlePrivateMessage(e, message);
+      setMessage('');
+    } else {
+      location.pathname === '/' ? handleMessage(e, message) : handlePrivateMessage(e, message);
+      setMessage('');
+    }
+    setIsEdit(false);
+  }
+
+  async function handleCancel() {
     setMessage('');
+    await setIsEdit((v) => !v);
   }
 
   return (
@@ -59,7 +79,7 @@ export default function TextArea({ handleMessage, handlePrivateMessage, inputRef
             color='red'
             variant='text'
             className='rounded-md'
-            onClick={() => setMessage('')}>
+            onClick={handleCancel}>
             Отмена
           </Button>
           <Button

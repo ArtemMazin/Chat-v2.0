@@ -10,6 +10,8 @@ const Chat = ({
   handleRemovePrivateMessage,
   setInputFocus,
   inputRef,
+  setIsEdit,
+  setMessage,
 }) => {
   const location = useLocation();
 
@@ -27,6 +29,8 @@ const Chat = ({
           handleRemoveMessage={handleRemoveMessage}
           setInputFocus={setInputFocus}
           inputRef={inputRef}
+          setIsEdit={setIsEdit}
+          setMessage={setMessage}
         />
       )}
     </>

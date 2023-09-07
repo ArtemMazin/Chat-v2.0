@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import { Card } from '@material-tailwind/react';
 import { CurrentUserContext } from '../../../contexts/CurrentUserContext';
 
-const MessageList = ({ messageList, handleRemoveMessage, setInputFocus, inputRef }) => {
+const MessageList = ({ messageList, handleRemoveMessage, setInputFocus, inputRef, setIsEdit, setMessage }) => {
   const currentUser = useContext(CurrentUserContext);
   const messagesEndRef = useRef(null);
 
@@ -14,11 +14,11 @@ const MessageList = ({ messageList, handleRemoveMessage, setInputFocus, inputRef
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleEditMessage = (e, message) => {
+  const handleEditButton = async (message) => {
+    await setIsEdit((v) => !v);
     setInputFocus();
-
     inputRef.current.value = message.message;
-    console.log(e.target, message.message);
+    setMessage(message.message);
   };
 
   return (
@@ -48,7 +48,7 @@ const MessageList = ({ messageList, handleRemoveMessage, setInputFocus, inputRef
                         <button
                           className='h-4 w-4 bg-correct-img'
                           type='button'
-                          onClick={(e) => handleEditMessage(e, message)}
+                          onClick={() => handleEditButton(message)}
                         />
                       </div>
                       <div className='flex gap-2 items-center'>
