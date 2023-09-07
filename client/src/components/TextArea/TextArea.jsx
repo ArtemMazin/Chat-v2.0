@@ -3,7 +3,7 @@ import EmojiPicker from 'emoji-picker-react';
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-export default function TextArea({ handleMessage, handlePrivateMessage }) {
+export default function TextArea({ handleMessage, handlePrivateMessage, inputRef }) {
   const [selectedEmoji, setSelectedEmoji] = useState('');
   const [emojiIsOpen, setEmojiIsOpen] = useState(false);
   const [message, setMessage] = useState('');
@@ -28,10 +28,11 @@ export default function TextArea({ handleMessage, handlePrivateMessage }) {
     <form
       className='relative'
       onSubmit={handleSubmit}>
-      <Input
-        variant='outlined'
-        label='Сообщение'
+      <input
+        className='w-full p-1 placeholder:text-xs'
+        placeholder='Введите сообщение'
         value={message || ''}
+        ref={inputRef}
         onChange={(e) => setMessage(e.target.value)}
       />
       <div className='w-full relative flex justify-between py-1.5'>

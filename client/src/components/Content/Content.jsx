@@ -3,6 +3,7 @@ import Chat from '../Chat/Chat';
 import Sidebar from '../Sidebar/Sidebar';
 import TextArea from '../TextArea/TextArea';
 import { useMessageHandler } from '../../hooks/useMessageHandler';
+import useFocus from '../../hooks/useFocus';
 
 const Content = () => {
   const {
@@ -16,6 +17,8 @@ const Content = () => {
     handleRemoveMessage,
     handleRemovePrivateMessage,
   } = useMessageHandler();
+
+  const [inputRef, setInputFocus] = useFocus();
 
   // console.count('count Content');
 
@@ -33,10 +36,13 @@ const Content = () => {
             selectedUser={selectedUser}
             handleRemoveMessage={handleRemoveMessage}
             handleRemovePrivateMessage={handleRemovePrivateMessage}
+            setInputFocus={setInputFocus}
+            inputRef={inputRef}
           />
           <TextArea
             handleMessage={handleMessage}
             handlePrivateMessage={handlePrivateMessage}
+            inputRef={inputRef}
           />
         </div>
       </div>
