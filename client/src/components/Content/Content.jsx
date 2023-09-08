@@ -24,8 +24,6 @@ const Content = () => {
   const [message, setMessage] = useState('');
   const [editedMessage, setEditedMessage] = useState({});
 
-  console.log(isEdit, message);
-
   // console.count('count Content');
 
   return (

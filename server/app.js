@@ -10,7 +10,13 @@ import { errors } from 'celebrate';
 import router from './routes/index';
 import handleErrors from './errors/handleErrors';
 import dateOptions from './utils/constants';
-import { createMessageDB, deleteMessage, getMessagesDB, getPrivatMessagesDB } from './controllers/messages';
+import {
+  createMessageDB,
+  deleteMessage,
+  getMessagesDB,
+  getPrivatMessagesDB,
+  updateMessage,
+} from './controllers/messages';
 
 const { PORT = 5000 } = process.env;
 let users = [];
@@ -38,7 +44,7 @@ app.use(
     credentials: true,
     origin: ['http://localhost:3000'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  })
+  }),
 );
 // express-rate-limit ограничивает количество запросов
 app.use(limiter);
@@ -86,7 +92,9 @@ io.on('connection', (socket) => {
 
     const isPrivat = false;
     const owner = currentUser;
-    messages[roomID].push({ message, owner, createdAt, time });
+    messages[roomID].push({
+      message, owner, createdAt, time,
+    });
 
     createMessageDB(message, owner, isPrivat, createdAt, time);
 
@@ -115,6 +123,7 @@ io.on('connection', (socket) => {
     messages[roomID] = messages[roomID].map((m) => (m.createdAt === editedMessage ? returnEditMessage(m) : m));
 
     io.emit('updateMessageList', messages[roomID]);
+    updateMessage(editedMessage, message);
   });
 
   socket.on('privateMessage', ({ message, to, currentUser }) => {
