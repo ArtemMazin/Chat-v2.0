@@ -1,8 +1,16 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Card } from '@material-tailwind/react';
 import { CurrentUserContext } from '../../../contexts/CurrentUserContext';
 
-const MessageList = ({ messageList, handleRemoveMessage, setInputFocus, inputRef, setIsEdit, setMessage }) => {
+const MessageList = ({
+  messageList,
+  handleRemoveMessage,
+  setInputFocus,
+  inputRef,
+  setIsEdit,
+  setMessage,
+  setEditedMessage,
+}) => {
   const currentUser = useContext(CurrentUserContext);
   const messagesEndRef = useRef(null);
 
@@ -14,11 +22,12 @@ const MessageList = ({ messageList, handleRemoveMessage, setInputFocus, inputRef
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const handleEditButton = async (message) => {
-    await setIsEdit((v) => !v);
+  const handleEditButton = (message) => {
+    setIsEdit(() => true);
     setInputFocus();
     inputRef.current.value = message.message;
     setMessage(message.message);
+    setEditedMessage(message.createdAt);
   };
 
   return (

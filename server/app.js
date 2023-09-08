@@ -107,6 +107,16 @@ io.on('connection', (socket) => {
     deleteMessage(message.createdAt);
   });
 
+  socket.on('editMessage', ({ editedMessage, message }) => {
+    const returnEditMessage = (m) => {
+      m.message = message;
+      return m;
+    };
+    messages[roomID] = messages[roomID].map((m) => (m.createdAt === editedMessage ? returnEditMessage(m) : m));
+
+    io.emit('updateMessageList', messages[roomID]);
+  });
+
   socket.on('privateMessage', ({ message, to, currentUser }) => {
     const isPrivat = true;
     const owner = currentUser;

@@ -11,6 +11,8 @@ export default function TextArea({
   setIsEdit,
   message,
   setMessage,
+  handleEditMessage,
+  editedMessage,
 }) {
   const [selectedEmoji, setSelectedEmoji] = useState('');
   const [emojiIsOpen, setEmojiIsOpen] = useState(false);
@@ -29,19 +31,20 @@ export default function TextArea({
   function handleSubmit(e) {
     e.preventDefault();
     if (isEdit) {
+      //заменить функцию для приватных сообщений
       console.log(isEdit);
-      location.pathname === '/' ? handleMessage(e, message) : handlePrivateMessage(e, message);
+      location.pathname === '/' ? handleEditMessage(e, editedMessage, message) : handleEditMessage(e, editedMessage);
       setMessage('');
     } else {
       location.pathname === '/' ? handleMessage(e, message) : handlePrivateMessage(e, message);
       setMessage('');
     }
-    setIsEdit(false);
+    setIsEdit(() => false);
   }
 
-  async function handleCancel() {
+  function handleCancel() {
     setMessage('');
-    await setIsEdit((v) => !v);
+    setIsEdit(() => false);
   }
 
   return (

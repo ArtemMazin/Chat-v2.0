@@ -39,6 +39,12 @@ export const useMessageHandler = () => {
     e.preventDefault();
     socket.emit('sendMessage', { message, currentUser });
   }
+
+  function handleEditMessage(e, editedMessage, message) {
+    e.preventDefault();
+    socket.emit('editMessage', { editedMessage, message });
+  }
+
   function handleRemoveMessage(e, message) {
     e.preventDefault();
     socket.emit('removeMessage', { message });
@@ -74,5 +80,6 @@ export const useMessageHandler = () => {
     handleRemoveMessage,
     handleRemovePrivateMessage,
     handleLogout,
+    handleEditMessage,
   };
 };

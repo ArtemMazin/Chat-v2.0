@@ -16,11 +16,13 @@ const Content = () => {
     selectedUser,
     handleRemoveMessage,
     handleRemovePrivateMessage,
+    handleEditMessage,
   } = useMessageHandler();
 
   const [inputRef, setInputFocus] = useFocus();
   const [isEdit, setIsEdit] = useState(false);
   const [message, setMessage] = useState('');
+  const [editedMessage, setEditedMessage] = useState({});
 
   console.log(isEdit, message);
 
@@ -44,15 +46,18 @@ const Content = () => {
             inputRef={inputRef}
             setIsEdit={setIsEdit}
             setMessage={setMessage}
+            setEditedMessage={setEditedMessage}
           />
           <TextArea
             handleMessage={handleMessage}
             message={message}
             setMessage={setMessage}
             handlePrivateMessage={handlePrivateMessage}
+            handleEditMessage={handleEditMessage}
             inputRef={inputRef}
             isEdit={isEdit}
             setIsEdit={setIsEdit}
+            editedMessage={editedMessage}
           />
         </div>
       </div>

@@ -12,6 +12,7 @@ const Chat = ({
   inputRef,
   setIsEdit,
   setMessage,
+  setEditedMessage,
 }) => {
   const location = useLocation();
 
@@ -31,6 +32,7 @@ const Chat = ({
           inputRef={inputRef}
           setIsEdit={setIsEdit}
           setMessage={setMessage}
+          setEditedMessage={setEditedMessage}
         />
       )}
     </>
