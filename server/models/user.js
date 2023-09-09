@@ -40,6 +40,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     select: false,
   },
+  online: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 
 // метод, возвращающий user без пароля

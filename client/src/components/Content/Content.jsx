@@ -17,6 +17,9 @@ const Content = () => {
     handleRemoveMessage,
     handleRemovePrivateMessage,
     handleEditMessage,
+    notification,
+    setNotification,
+    toNotification,
   } = useMessageHandler();
 
   const [inputRef, setInputFocus] = useFocus();
@@ -32,6 +35,9 @@ const Content = () => {
         <Sidebar
           users={userList}
           setSelectedUser={setSelectedUser}
+          notification={notification}
+          setNotification={setNotification}
+          toNotification={toNotification}
         />
         <div className='w-full flex flex-col gap-2'>
           <Chat

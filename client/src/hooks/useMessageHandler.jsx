@@ -7,6 +7,8 @@ export const useMessageHandler = () => {
   const [privateMessageList, setPrivateMessageList] = useState({});
   const [messageList, setMessageList] = useState([]);
   const [userList, setUserList] = useState('');
+  const [notification, setNotification] = useState(false);
+  const [toNotification, setToNotification] = useState(false);
 
   const socket = useContext(SocketContext);
   const currentUser = useContext(CurrentUserContext);
@@ -22,7 +24,9 @@ export const useMessageHandler = () => {
       setPrivateMessageList(privateMessagesDB);
     });
 
-    socket.on('updatePrivateMessageList', (messages) => {
+    socket.on('updatePrivateMessageList', (messages, owner) => {
+      setToNotification(owner);
+      setNotification(() => true);
       setPrivateMessageList(messages);
     });
 
@@ -81,5 +85,8 @@ export const useMessageHandler = () => {
     handleRemovePrivateMessage,
     handleLogout,
     handleEditMessage,
+    notification,
+    setNotification,
+    toNotification,
   };
 };

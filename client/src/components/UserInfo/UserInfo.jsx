@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Avatar, Typography } from '@material-tailwind/react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-export default function UserInfo({ user, setSelectedUser }) {
+export default function UserInfo({ user, setSelectedUser, notification, setNotification, toNotification }) {
+  const location = useLocation();
+
+  useEffect(() => {
+    location.pathname === '/users/' + user._id && setNotification(false);
+  }, [location.pathname, setNotification, user._id]);
+
   return (
     <Link to={'/users/' + user._id}>
       <Button
@@ -29,6 +35,8 @@ export default function UserInfo({ user, setSelectedUser }) {
             {user.about}
           </Typography>
         </div>
+        <p>{user.online && 'online'}</p>
+        {toNotification._id === user._id && notification && <div>&#9993;</div>}
       </Button>
     </Link>
   );

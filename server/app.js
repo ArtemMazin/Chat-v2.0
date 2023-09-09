@@ -17,6 +17,7 @@ import {
   getPrivatMessagesDB,
   updateMessage,
 } from './controllers/messages';
+import User from './models/user';
 
 const { PORT = 5000 } = process.env;
 let users = [];
@@ -44,7 +45,7 @@ app.use(
     credentials: true,
     origin: ['http://localhost:3000'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  }),
+  })
 );
 // express-rate-limit ограничивает количество запросов
 app.use(limiter);
@@ -73,10 +74,12 @@ io.on('connection', (socket) => {
     messages[roomID] = messagesDB;
 
     if (data.user._id && data.user.name) {
-      const userExists = users.some((user) => user._id === socket.userID);
-      if (!userExists) {
-        users.push(data.user);
-      }
+      await User.updateOne({ _id: data.user._id }, { $set: { online: true } });
+      users = await User.find({});
+      // const userExists = users.some((user) => user._id === socket.userID);
+      // if (!userExists) {
+      //   users.push(data.user);
+      // }
 
       const MESSAGE_SYSTEM = `${data.user.name} присоединился`;
 
@@ -93,7 +96,10 @@ io.on('connection', (socket) => {
     const isPrivat = false;
     const owner = currentUser;
     messages[roomID].push({
-      message, owner, createdAt, time,
+      message,
+      owner,
+      createdAt,
+      time,
     });
 
     createMessageDB(message, owner, isPrivat, createdAt, time);
@@ -149,17 +155,22 @@ io.on('connection', (socket) => {
     });
 
     createMessageDB(message, owner, isPrivat, createdAt, time, to);
-    io.to(socket.userID).to(to).emit('updatePrivateMessageList', messages);
+    io.to(socket.userID).to(to).emit('updatePrivateMessageList', messages, owner);
   });
 
-  socket.on('logout', (currentUser) => {
-    users = users.filter((user) => user._id !== currentUser._id);
+  socket.on('logout', async (currentUser) => {
+    // users = users.filter((user) => user._id !== currentUser._id);
+
+    await User.updateOne({ _id: socket.userID }, { $set: { online: false } });
+    users = await User.find({});
     io.emit('updateUserList', users);
   });
 
-  socket.on('disconnect', () => {
+  socket.on('disconnect', async () => {
     console.log(`${socket.userName} покинул чат`);
-    users = users.filter((user) => user._id !== socket.userID);
+    // users = users.filter((user) => user._id !== socket.userID);
+    await User.updateOne({ _id: socket.userID }, { $set: { online: false } });
+    users = await User.find({});
     io.emit('updateUserList', users);
   });
 });

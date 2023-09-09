@@ -3,7 +3,7 @@ import UserInfo from '../UserInfo/UserInfo';
 import { useContext, useMemo } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-export default function Sidebar({ users, setSelectedUser }) {
+export default function Sidebar({ users, setSelectedUser, notification, setNotification, toNotification }) {
   const currentUser = useContext(CurrentUserContext);
 
   const filteredUserList = useMemo(() => {
@@ -24,6 +24,9 @@ export default function Sidebar({ users, setSelectedUser }) {
               <UserInfo
                 user={user}
                 setSelectedUser={setSelectedUser}
+                notification={notification}
+                setNotification={setNotification}
+                toNotification={toNotification}
               />
             </li>
           ))}
