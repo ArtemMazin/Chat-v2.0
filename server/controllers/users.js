@@ -1,25 +1,25 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../models/user';
-import EmailIsExist from '../errors/EmailIsExist';
-import NotFoundError from '../errors/NotFoundError';
+import User from '../models/user.js';
+import EmailIsExist from '../errors/EmailIsExist.js';
+import NotFoundError from '../errors/NotFoundError.js';
 
 const register = (req, res, next) => {
-  const {
-    name, about, avatar, email, password,
-  } = req.body;
+  const { name, about, avatar, email, password } = req.body;
 
   bcrypt
     .hash(password, 10)
-    .then((hash) => User.create({
-      name,
-      about,
-      avatar,
-      email,
-      password: hash,
-    }).then((user) => {
-      res.status(201).send({ data: user.toJSON() });
-    }))
+    .then((hash) =>
+      User.create({
+        name,
+        about,
+        avatar,
+        email,
+        password: hash,
+      }).then((user) => {
+        res.status(201).send({ data: user.toJSON() });
+      })
+    )
     .catch((err) => {
       if (err.code === 11000) {
         next(new EmailIsExist('Пользователь уже существует'));
@@ -74,12 +74,10 @@ const updateProfile = (req, res, next) => {
     {
       new: true, // обработчик then получит на вход обновлённую запись
       runValidators: true, // данные будут валидированы перед изменением
-    },
+    }
   )
     .then((user) => res.send({ data: user }))
     .catch(next);
 };
 
-export {
-  register, login, getUsers, logout, getProfile, updateProfile,
-};
+export { register, login, getUsers, logout, getProfile, updateProfile };

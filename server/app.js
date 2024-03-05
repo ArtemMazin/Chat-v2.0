@@ -7,17 +7,17 @@ import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { errors } from 'celebrate';
-import router from './routes/index';
-import handleErrors from './errors/handleErrors';
-import dateOptions from './utils/constants';
+import router from './routes/index.js';
+import handleErrors from './errors/handleErrors.js';
+import dateOptions from './utils/constants.js';
 import {
   createMessageDB,
   deleteMessage,
   getMessagesDB,
   getPrivatMessagesDB,
   updateMessage,
-} from './controllers/messages';
-import User from './models/user';
+} from './controllers/messages.js';
+import User from './models/user.js';
 
 const { PORT = 5000 } = process.env;
 let users = [];
@@ -158,7 +158,7 @@ io.on('connection', (socket) => {
     io.to(socket.userID).to(to).emit('updatePrivateMessageList', messages, owner);
   });
 
-  socket.on('logout', async (currentUser) => {
+  socket.on('logout', async () => {
     // users = users.filter((user) => user._id !== currentUser._id);
 
     await User.updateOne({ _id: socket.userID }, { $set: { online: false } });

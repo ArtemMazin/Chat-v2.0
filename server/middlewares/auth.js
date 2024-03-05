@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import UnauthorizedError from '../errors/UnauthorizedError';
+import UnauthorizedError from '../errors/UnauthorizedError.js';
 
 const checkAuth = (req, res, next) => {
   if (req.cookies.jwt) {

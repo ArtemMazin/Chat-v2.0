@@ -16,4 +16,23 @@
 ![Socket.io](https://img.shields.io/badge/Socket.io-black?style=for-the-badge&logo=socket.io&badgeColor=010101)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
+## Инструкция по запуску
+
+```bash
+git clone https://github.com/ArtemMazin/Chat-v2.0.git
+cd Chat-v2.0
+запустите сервер MongoDB:
+mongod
+
+//server
+cd server
+npm install
+npm run dev
+
+//client
+cd client
+npm install
+npm run start
+```
+
 ![https://github.com/ArtemMazin/Chat-v2.0/preview.gif](https://github.com/ArtemMazin/Chat-v2.0/blob/main/preview.gif)

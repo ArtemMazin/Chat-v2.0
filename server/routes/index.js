@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import userRoutes from './users';
-import { login, logout, register } from '../controllers/users';
-import checkAuth from '../middlewares/auth';
-import { loginValidation, registerValidation } from '../utils/validationConfig';
-import NotFoundError from '../errors/NotFoundError';
+import userRoutes from './users.js';
+import { login, logout, register } from '../controllers/users.js';
+import checkAuth from '../middlewares/auth.js';
+import { loginValidation, registerValidation } from '../utils/validationConfig.js';
+import NotFoundError from '../errors/NotFoundError.js';
 
 const router = Router();
 
